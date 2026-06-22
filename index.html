@@ -205,7 +205,7 @@ body{background:var(--bg);display:flex;height:100vh;overflow:hidden;-webkit-font
 <!-- LOGIN -->
 <div id="login" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#13254a,#1c3a6e);display:flex;align-items:center;justify-content:center">
   <div style="background:#fff;border-radius:16px;padding:30px 32px;width:374px;max-width:92vw;box-shadow:0 20px 60px rgba(0,0,0,.35)">
-    <div style="text-align:center"><div style="display:inline-flex;align-items:center;gap:9px"><div class="logoBig" style="width:38px;height:38px;border-radius:9px"><svg class="brideSVG" viewBox="0 0 64 64" style="width:70%;height:70%" fill="none"><path d="M5 43h54" stroke-width="4" stroke-linecap="round"/><path d="M14 43V24M50 43V24" stroke-width="3" stroke-linecap="round"/><path d="M7 31C19 16 45 16 57 31" stroke-width="3.5" stroke-linecap="round"/><path d="M22 17l-3 26M42 17l3 26M32 15v28" stroke-width="2" stroke-linecap="round" opacity=".8"/></svg></div><div style="text-align:left"><div style="font-size:21px;font-weight:800;color:#13254a">Jusoor</div><div style="font-size:9px;color:#6b7790;letter-spacing:3px">جسور · GSK SHINGRIX</div></div></div></div>
+    <div style="text-align:center"><div style="display:inline-flex;align-items:center;gap:9px"><div class="logoBig jlogo" style="width:38px;height:38px;border-radius:9px"><svg class="brideSVG" viewBox="0 0 64 64" style="width:70%;height:70%" fill="none"><path d="M5 43h54" stroke-width="4" stroke-linecap="round"/><path d="M14 43V24M50 43V24" stroke-width="3" stroke-linecap="round"/><path d="M7 31C19 16 45 16 57 31" stroke-width="3.5" stroke-linecap="round"/><path d="M22 17l-3 26M42 17l3 26M32 15v28" stroke-width="2" stroke-linecap="round" opacity=".8"/></svg></div><div style="text-align:left"><div style="font-size:21px;font-weight:800;color:#13254a">Jusoor</div><div style="font-size:9px;color:#6b7790;letter-spacing:3px">جسور · GSK SHINGRIX</div></div></div></div>
     <div style="font-size:12px;color:#6b7790;text-align:center;margin:14px 0 16px">Sign in to the immunisation platform</div>
     <div style="background:#fff7e6;border:1px solid #f3d699;color:#9a6b00;font-size:10px;border-radius:8px;padding:8px 10px;margin-bottom:14px;line-height:1.5">🔒 Demo environment — 100% synthetic data. Do not enter real patient identifiers.</div>
     <label style="font-size:11px;font-weight:700">Role</label>
@@ -221,7 +221,7 @@ body{background:var(--bg);display:flex;height:100vh;overflow:hidden;-webkit-font
 
 <!-- SIDEBAR -->
 <aside class="sb">
-  <div class="sb-logo"><div class="sb-mark"><svg class="brideSVG" viewBox="0 0 64 64" style="width:64%;height:64%" fill="none"><path d="M5 43h54" stroke-width="4" stroke-linecap="round"/><path d="M14 43V24M50 43V24" stroke-width="3" stroke-linecap="round"/><path d="M7 31C19 16 45 16 57 31" stroke-width="3.5" stroke-linecap="round"/><path d="M22 17l-3 26M42 17l3 26M32 15v28" stroke-width="2" stroke-linecap="round" opacity=".8"/></svg></div><div><div class="sb-name">Jusoor</div><div class="sb-sub">جسور · GSK Shingrix</div></div></div>
+  <div class="sb-logo"><div class="sb-mark jlogo"><svg class="brideSVG" viewBox="0 0 64 64" style="width:64%;height:64%" fill="none"><path d="M5 43h54" stroke-width="4" stroke-linecap="round"/><path d="M14 43V24M50 43V24" stroke-width="3" stroke-linecap="round"/><path d="M7 31C19 16 45 16 57 31" stroke-width="3.5" stroke-linecap="round"/><path d="M22 17l-3 26M42 17l3 26M32 15v28" stroke-width="2" stroke-linecap="round" opacity=".8"/></svg></div><div><div class="sb-name">Jusoor</div><div class="sb-sub">جسور · GSK Shingrix</div></div></div>
   <div class="sb-role"><div class="sb-role-dot"></div><div class="sb-role-name" id="sbRole">PHC Coordinator · Riyadh</div></div>
   <div class="sb-scroll">
     <div class="sb-sec">Clinical</div>
@@ -243,7 +243,7 @@ body{background:var(--bg);display:flex;height:100vh;overflow:hidden;-webkit-font
     <div class="si" data-v="settings"><span class="si-ic">⚙</span>Settings</div>
   </div>
   <div class="sb-sync"><div class="syncd"></div>AI engine synced · just now</div>
-  <div class="sb-foot"><div class="sb-av" id="sbAv">CM</div><div><div class="sb-un" id="sbUn">Nurse Mona Al-Zahrani</div><div class="sb-ur">Riyadh PHC Cluster</div></div></div>
+  <div class="sb-foot"><div class="sb-av" id="sbAv">CM</div><div style="flex:1"><div class="sb-un" id="sbUn">Nurse Mona Al-Zahrani</div><div class="sb-ur">Riyadh PHC Cluster</div></div><div style="cursor:pointer;color:rgba(255,255,255,.5);font-size:15px" onclick="logout()" title="Sign out">⎋</div></div>
 </aside>
 
 <div class="main">
@@ -267,12 +267,21 @@ body{background:var(--bg);display:flex;height:100vh;overflow:hidden;-webkit-font
     <div class="kpi" style="--kc:var(--rd)" onclick="show('huddle')"><div class="kl">Dose 2 overdue</div><div class="kv" style="color:var(--rd)" id="kOver">0</div><div class="ks">recovery needed</div></div>
     <div class="kpi" style="--kc:var(--am)" onclick="show('clinic')"><div class="kl">Symptom follow-ups</div><div class="kv" style="color:var(--am)" id="kAefi">0</div><div class="ks">post-vaccine</div></div>
   </div>
-  <div class="gx" style="margin-bottom:14px">
-    <div class="card cp"><div class="ch"><div><div class="ct">Series completion trend</div><div class="cs">Weekly cumulative</div></div></div><canvas id="trendChart" height="130"></canvas></div>
-    <div class="card cp"><div class="ch"><div><div class="ct">Risk segments</div><div class="cs">Enrolled by profile</div></div></div><canvas id="segChart" height="130"></canvas></div>
+  <div class="g2" style="margin-bottom:14px">
+    <div class="card cp"><div class="ch"><div><div class="ct">AI risk distribution</div><div class="cs">Enrolled patients by risk band</div></div></div><canvas id="riskDistChart" height="150"></canvas></div>
+    <div class="card cp"><div class="ch"><div><div class="ct">Risk segments</div><div class="cs">Enrolled by profile</div></div></div><canvas id="segChart" height="150"></canvas></div>
+  </div>
+  <div class="g2" style="margin-bottom:14px">
+    <div class="card cp"><div class="ch"><div><div class="ct">Series completion — trend</div><div class="cs">Cumulative Dose 1 vs complete</div></div></div><canvas id="trendChart" height="150"></canvas></div>
+    <div class="card cp"><div class="ch"><div><div class="ct">Risk stratification</div><div class="cs">By profile · high / moderate / low</div></div></div><canvas id="stratChart" height="150"></canvas></div>
+  </div>
+  <div class="g3" style="margin-bottom:14px">
+    <div class="card cp"><div class="ct" style="margin-bottom:10px">Dose status</div><canvas id="statusChart" height="160"></canvas></div>
+    <div class="card cp"><div class="ct" style="margin-bottom:10px">Dose 1 coverage by centre</div><canvas id="centreChart" height="160"></canvas></div>
+    <div class="card cp"><div class="ct" style="margin-bottom:10px">Eligibility mix</div><canvas id="eligChart" height="160"></canvas></div>
   </div>
   <div class="gx">
-    <div class="card cp"><div class="ch"><div class="ct">Today's priority patients</div><button class="btn btn-o btn-xs" onclick="show('huddle')">Morning Huddle →</button></div><div id="dashPri"></div></div>
+    <div class="card cp"><div class="ch"><div class="ct">Priority patients — AI flagged</div><button class="btn btn-o btn-xs" onclick="show('huddle')">Morning Huddle →</button></div><div id="dashPri"></div></div>
     <div class="card cp"><div class="ch"><div class="ct">PHC cluster performance</div></div><div class="tbl-w"><table class="tbl"><thead><tr><th>PHC centre</th><th>Dose 1</th><th>Complete</th></tr></thead><tbody>
       <tr><td>Al Olaya, Riyadh</td><td>71%</td><td><span class="chip ch-g">66%</span></td></tr>
       <tr><td>Al Naseem, Riyadh</td><td>64%</td><td><span class="chip ch-g">60%</span></td></tr>
@@ -417,9 +426,9 @@ body{background:var(--bg);display:flex;height:100vh;overflow:hidden;-webkit-font
 <div class="view" id="v-settings">
   <div class="g2">
     <div class="card cp"><div class="ct" style="margin-bottom:12px">Branding</div>
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px"><div class="logoBig"><svg class="brideSVG" viewBox="0 0 64 64" style="width:62%;height:62%" fill="none"><path d="M5 43h54" stroke-width="4" stroke-linecap="round"/><path d="M14 43V24M50 43V24" stroke-width="3" stroke-linecap="round"/><path d="M7 31C19 16 45 16 57 31" stroke-width="3.5" stroke-linecap="round"/><path d="M22 17l-3 26M42 17l3 26M32 15v28" stroke-width="2" stroke-linecap="round" opacity=".8"/></svg></div><div><div style="font-weight:800;font-size:15px">Jusoor × GSK</div><div style="font-size:11px;color:var(--mu)">Shingrix Immunisation Programme</div></div></div>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px"><div class="logoBig jlogo"><svg class="brideSVG" viewBox="0 0 64 64" style="width:62%;height:62%" fill="none"><path d="M5 43h54" stroke-width="4" stroke-linecap="round"/><path d="M14 43V24M50 43V24" stroke-width="3" stroke-linecap="round"/><path d="M7 31C19 16 45 16 57 31" stroke-width="3.5" stroke-linecap="round"/><path d="M22 17l-3 26M42 17l3 26M32 15v28" stroke-width="2" stroke-linecap="round" opacity=".8"/></svg></div><div><div style="font-weight:800;font-size:15px">Jusoor × GSK</div><div style="font-size:11px;color:var(--mu)">Shingrix Immunisation Programme</div></div></div>
       <div class="fg" style="margin-top:10px"><label>Programme name</label><input value="GSK Shingrix Immunisation Programme"></div>
-      <div class="fg"><label>Replace logo (PNG/SVG)</label><input type="file" accept="image/*" onchange="toast('Logo updated ✓','Applied to header & login')"></div>
+      <div class="fg"><label>Replace logo (PNG/SVG)</label><input type="file" accept="image/*" onchange="uploadLogo(this)"></div>
     </div>
     <div class="card cp"><div class="ct" style="margin-bottom:12px">AI engine</div>
       <div class="set-row"><div><div class="n">Local rule engine</div><div class="d">In-browser scoring · no data leaves device</div></div><label class="sw"><input type="checkbox" checked disabled><span class="sl"></span></label></div>
@@ -452,10 +461,16 @@ body{background:var(--bg);display:flex;height:100vh;overflow:hidden;-webkit-font
 /* ===== Login ===== */
 const NAMES={'PHC Coordinator':['Sarah Al-Ghamdi','Nora Al-Harbi'],'Physician':['Dr. Khalid Al-Ghamdi','Dr. Mona Al-Subaie'],'Immunisation Nurse':['Nurse Mona Al-Zahrani','Reem Al-Anzi'],'Programme Manager':['Yousef Al-Rashid']};
 function lgNames(){const r=document.getElementById('lgRole').value;document.getElementById('lgName').innerHTML=NAMES[r].map(n=>`<option>${n}</option>`).join('');}
-function doLogin(){const r=document.getElementById('lgRole').value,n=document.getElementById('lgName').value;
-  document.getElementById('sbRole').textContent=r+' · Riyadh';document.getElementById('sbUn').textContent=n;
+function applySession(r,n){document.getElementById('sbRole').textContent=r+' · Riyadh';document.getElementById('sbUn').textContent=n;
   document.getElementById('sbAv').textContent=n.replace(/^(Dr\.|Nurse)\s/,'').split(' ').map(x=>x[0]).join('').slice(0,2);
   document.getElementById('login').style.display='none';}
+function doLogin(){const r=document.getElementById('lgRole').value,n=document.getElementById('lgName').value;
+  try{localStorage.setItem('jusoor_sess',JSON.stringify({r,n}));}catch(e){}
+  applySession(r,n);}
+function logout(){try{localStorage.removeItem('jusoor_sess');}catch(e){}document.getElementById('login').style.display='flex';}
+function applyLogo(url){document.querySelectorAll('.jlogo').forEach(el=>{el.innerHTML='<img src="'+url+'" style="width:100%;height:100%;object-fit:cover;border-radius:inherit" alt="logo">';});}
+function uploadLogo(inp){const f=inp.files&&inp.files[0];if(!f)return;const rd=new FileReader();rd.onload=e=>{applyLogo(e.target.result);try{localStorage.setItem('jusoor_logo',e.target.result);}catch(x){}toast('Logo updated ✓','Saved — applied to header & login');};rd.readAsDataURL(f);}
+function restoreSession(){try{const lg=localStorage.getItem('jusoor_logo');if(lg)applyLogo(lg);const s=localStorage.getItem('jusoor_sess');if(s){const o=JSON.parse(s);applySession(o.r,o.n);}}catch(e){}}
 lgNames();
 
 /* ===== AI RULE ENGINE (local) ===== */
@@ -733,20 +748,67 @@ function renderEdu(){
 }
 
 /* ===== Patient modal ===== */
-function openPat(id){const p=patients[id];document.getElementById('pmT').textContent=p.en;
-  const arMsg=p.f==='caregiver'?'جزاك الله خيراً على رعايتك 🤍 شاركينا رقم والدك وسيتصل به المنسق.':p.f==='d2over'?'تذكير ⏰ حان وقت جرعتك الثانية. احجز الآن لإكمال الحماية.':p.f==='done'?'أكملت جرعتيك وأنت محمي بإذن الله 🤍':'مرحباً 👋 أنت مؤهل للقاح الحزام الناري. احجز: 🔗 jusoor.health/shingrix';
-  const flag=p.f==='d2over'?'<div class="flag fR2">⏰ Dose 2 overdue — protection incomplete. Priority call.</div>':p.aefiFlag?'<div class="flag fY2">🩺 Post-vaccine symptom flagged ('+p.symptom+') — review in Virtual Clinic.</div>':p.f==='caregiver'?'<div class="flag fY2">🤝 Caregiver lead — capture relative\'s number.</div>':p.f==='done'?'<div class="flag fG2">✅ Two-dose course complete.</div>':p.f==='d1'?'<div class="flag fY2">💉 Dose 1 given — schedule Dose 2 ('+p.schedule+').</div>':'<div class="flag fY2">📲 Not yet vaccinated — send link + nearest PHC.</div>';
+/* Rule-based AI alert engine (like the diabetic platform) */
+function alerts(p){const A=[];
+  if(p.f==='d2over')A.push({t:'Dose 2 overdue — two-dose protection incomplete; recall now',s:'r'});
+  if(p.f==='d1'&&p.immuno)A.push({t:'Immunocompromised — use the shorter 1–2 month Dose-2 interval',s:'a'});
+  else if(p.f==='d1')A.push({t:'Dose 1 given — schedule Dose 2 (2–6 months)',s:'a'});
+  if(p.f==='none'&&p.elig.ok)A.push({t:'Eligible but unvaccinated — offer Dose 1 + nearest PHC',s:'a'});
+  if(p.aefiFlag)A.push({t:'Post-vaccine symptom reported ('+p.symptom+') — review & give safety-net advice',s:'a'});
+  if((p.cond.includes('cancer')||p.cond.includes('transplant')||p.cond.includes('hiv'))&&p.f!=='done')A.push({t:'Severely immunocompromised — high PHN risk; complete series promptly',s:'r'});
+  else if(p.cond.includes('diabetes')&&p.age>=50&&p.f!=='done')A.push({t:'Diabetic 50+ — elevated zoster risk; prioritise outreach',s:'r'});
+  if(p.score>=70&&p.f!=='done'&&!p.caregiver)A.push({t:'High AI risk ('+p.score+'/100) — prioritise in this round',s:'r'});
+  if(p.caregiver)A.push({t:'Caregiver lead — capture eligible relative for enrolment',s:'a'});
+  if(!A.length)A.push({t:'No active alerts — series complete / on track',s:'g'});
+  return A;}
+function condList(p){return p.cond.length?p.cond.map(c=>`<div class="sc"><div class="scd ${COND[c]&&COND[c].imm?'s-ov':'s-due'}"></div><b>${COND[c]?COND[c].label:c}</b><span class="m">${COND[c]&&COND[c].imm?'immunocompromising':'comorbidity'}</span></div>`).join(''):'<div style="font-size:12px;color:var(--mu)">No conditions recorded — healthy adult</div>';}
+function openPat(id){const p=patients[id];document.getElementById('pmT').textContent=p.en+' — patient record';
+  const A=alerts(p),rc=(p.tier==='High'||p.tier==='Very High')?'var(--rd)':p.tier==='Moderate'?'var(--am)':'var(--gr)';
   document.getElementById('pmB').innerHTML=`
-   <div style="display:flex;gap:14px;align-items:flex-start"><div class="ph-av ${p.ab}">${p.en.split(' ').map(x=>x[0]).join('').slice(0,2)}</div>
-   <div style="flex:1"><div style="font-size:17px;font-weight:800">${p.en} <span class="ar" style="font-size:13px;color:var(--mu);font-weight:600">${p.n}</span></div><div style="font-size:11px;color:var(--mu);margin-top:3px">${p.age}y ${p.sex} · ${p.file} · <span class="tag ${p.rk}">${p.risk}</span></div><div style="font-size:11px;color:var(--mu);margin-top:3px">${p.phc} · 👨‍⚕️ ${p.doc} · <span class="chip ch-g">Covered · national programme</span></div></div></div>
-   <div class="vit" style="margin-top:14px"><div><div class="v">${p.caregiver?'—':p.score}</div><div class="l">AI risk · ${p.tier}</div></div><div><div class="v" style="font-size:12px">${p.d1}</div><div class="l">Dose 1</div></div><div><div class="v" style="font-size:12px">${p.d2}</div><div class="l">Dose 2</div></div><div><div class="v" style="font-size:11px">${p.symptom}</div><div class="l">Last symptom</div></div><div><div class="v" style="font-size:12px">${p.last}</div><div class="l">Last contact</div></div></div>
-   <div class="g2"><div class="card cp"><div class="ct" style="margin-bottom:8px">Dose schedule</div>
+   <div class="card cp"><div style="display:flex;gap:14px;align-items:flex-start"><div class="ph-av ${p.ab}">${p.en.split(' ').map(x=>x[0]).join('').slice(0,2)}</div>
+   <div style="flex:1"><div style="font-size:18px;font-weight:800">${p.en} <span class="tag ${p.rk}" style="font-weight:600">${p.risk}</span> ${(p.tier==='High'||p.tier==='Very High')?'<span class="tag rH">High Risk</span>':''}</div>
+   <div style="font-size:11px;color:var(--mu);margin-top:3px">${p.age}y ${p.sex} · ${p.file} · ${p.phc} · ${p.doc} · <span class="chip ch-g">Covered</span></div>
+   <div style="display:flex;gap:7px;margin-top:9px"><button class="btn btn-p btn-sm" onclick="show('messages')">💬 Message</button><button class="btn btn-g btn-sm" onclick="openSummary(${p.id})">📄 AI Patient Summary</button></div></div></div>
+   <div class="vit" style="margin-top:14px;grid-template-columns:repeat(6,1fr)"><div><div class="v" style="color:${rc}">${p.caregiver?'—':p.score+'%'}</div><div class="l">AI risk</div></div><div><div class="v" style="font-size:12px;color:${p.elig.ok?'var(--gr)':'var(--mu)'}">${p.elig.ok?'Eligible':'—'}</div><div class="l">Eligibility</div></div><div><div class="v" style="font-size:12px">${p.d1}</div><div class="l">Dose 1</div></div><div><div class="v" style="font-size:12px">${p.d2}</div><div class="l">Dose 2</div></div><div><div class="v" style="font-size:11px">${p.immuno?'1–2 mo':'2–6 mo'}</div><div class="l">Schedule</div></div><div><div class="v" style="font-size:11px">${p.symptom}</div><div class="l">Symptom</div></div></div></div>
+   <div class="g2" style="margin-top:14px"><div class="card cp"><div class="ct" style="margin-bottom:8px">RISK FACTORS (${p.cond.length})</div>${condList(p)}</div>
+   <div class="card cp"><div class="ct" style="margin-bottom:8px">VACCINATION & FOLLOW-UP</div>
      <div class="sc"><div class="scd ${p.d1!=='—'&&p.d1!=='n/a'?'s-ok':'s-ov'}"></div><b>Dose 1</b><span class="m">${p.d1}</span></div>
      <div class="sc"><div class="scd ${p.st==='Complete'?'s-ok':p.f==='d2over'?'s-ov':'s-due'}"></div><b>Dose 2</b><span class="m">${p.d2}</span></div>
-     <div class="sc"><div class="scd ${p.immuno?'s-due':'s-ok'}"></div><b>Schedule</b><span class="m">${p.schedule}</span></div>
-     <div class="sc"><div class="scd s-ok"></div><b>Eligibility</b><span class="m">${p.elig.basis}</span></div></div>
-   <div class="ai"><div class="ai-h"><div class="ai-ic">🤖</div><div><div class="ai-t">AI rule engine</div><div class="ai-s">Local · explainable</div></div></div>${flag}<div class="ai-b"><div class="ai-bt">Risk breakdown · ${p.caregiver?'n/a':p.score+'/100'}</div>${p.drivers.length?p.drivers.map(d=>`<div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.85);padding:2px 0"><span>${d.label}</span><span>+${d.v}</span></div>`).join(''):'<div style="font-size:11px;color:rgba(255,255,255,.6)">No risk factors</div>'}</div></div></div>
-   <div class="ai" style="margin-top:14px;background:linear-gradient(135deg,#16294d,#1f3a66)"><div class="ai-bt">Suggested WhatsApp message</div><div class="ar" style="font-size:14px;line-height:1.8;margin-bottom:8px">${arMsg}</div><button class="btn btn-b btn-sm" onclick="toast('Message sent ✓','via WhatsApp')">Send to patient</button></div>`;
+     <div class="sc"><div class="scd ${p.aefiFlag?'s-ov':'s-ok'}"></div><b>Post-vaccine symptom</b><span class="m">${p.symptom}</span></div>
+     <div class="sc"><div class="scd s-ok"></div><b>Last contact</b><span class="m">${p.last}</span></div></div></div>
+   <div class="card cp" style="margin-top:14px;border-color:var(--rdl)"><div class="ct" style="margin-bottom:10px;color:var(--rd)">⚠ AI ALERTS (${A.length}) <span style="font-weight:400;color:var(--mu);font-size:10px">· generated by the local rule engine</span></div>${A.map(x=>`<div style="background:${x.s==='r'?'var(--rdl)':x.s==='a'?'var(--aml)':'var(--grl)'};border-left:3px solid ${x.s==='r'?'var(--rd)':x.s==='a'?'var(--am)':'var(--gr)'};padding:9px 12px;border-radius:7px;margin-bottom:6px;font-size:12px">${x.t}</div>`).join('')}</div>
+   <div class="card cp" style="margin-top:14px"><div class="ct" style="margin-bottom:8px">CARE-TEAM COMMUNICATION</div>
+     <div style="font-size:12px;color:var(--mu);line-height:1.6"><b style="color:var(--tx)">Sarah Al-Ghamdi</b> <span style="font-size:10px">Care Coordinator · ${p.last}</span><br>${p.f==='d2over'?'Patient called — overdue for Dose 2, will book this week.':p.aefiFlag?'Patient reported '+p.symptom.toLowerCase()+' after dose — reassured, monitoring.':p.f==='caregiver'?'Caregiver enquiry — capturing eligible relative\'s details.':'Enrolled and contacted — engagement ongoing.'}</div>
+     ${p.disc.length?p.disc.map(d=>`<div style="font-size:12px;color:var(--mu);line-height:1.6;margin-top:8px"><b style="color:var(--tx)">${d.r}</b><br>${d.t}</div>`).join(''):''}</div>`;
+  document.getElementById('patModal').classList.add('open');}
+function openSummary(id){const p=patients[id];document.getElementById('pmT').textContent='After-Visit Patient Summary · ملخص ما بعد الزيارة';
+  const fu=p.f==='d2over'?['متابعة مكثفة','var(--rd)','حالتك تحتاج متابعة قريبة لإكمال الجرعة الثانية — سنكون معك خطوة بخطوة.']:p.aefiFlag?['متابعة','var(--am)','سنطمئن عليك بعد أيام من ظهور الأعراض.']:p.f==='done'?['روتينية','var(--gr)','أكملت جرعتيك وأنت محمي بإذن الله.']:['متابعة','var(--am)','سنساعدك في حجز جرعتك القادمة.'];
+  const eg=p.elig.ok?['مؤهل ✓','var(--gr)','للقاح شينجريكس']:['غير مؤهل','var(--mu)','حالياً'];
+  document.getElementById('pmB').innerHTML=`
+   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><button class="btn btn-o btn-xs" onclick="openPat(${p.id})">← Back to record</button><button class="btn btn-p btn-sm" onclick="toast('Summary sent ✓','via SMS / WhatsApp')">✉ Send via SMS / WhatsApp</button></div>
+   <div style="font-size:11px;color:var(--mu);margin-bottom:8px">Preview of the link the patient receives after the visit (powered by the AI engine)</div>
+   <div style="border:1px solid var(--bdr);border-radius:14px;overflow:hidden;max-width:480px;margin:0 auto">
+     <div style="background:linear-gradient(135deg,#16294d,#1f3a66);color:#fff;padding:16px;text-align:right;direction:rtl"><div style="font-size:16px;font-weight:800">جسور · ملخص زيارتك</div><div style="font-size:10px;opacity:.7">${p.phc} · ${p.doc} · 2026-06-22</div></div>
+     <div style="padding:18px;direction:rtl;text-align:right">
+       <div style="font-size:14px;font-weight:700;margin-bottom:6px">عزيزي ${p.en}،</div>
+       <div style="font-size:12px;color:var(--mu);line-height:1.7;margin-bottom:14px">شكراً لزيارتك. هذا ملخص بسيط لحالتك وما نحتاجه منك قبل موعدك القادم.</div>
+       <div style="font-weight:700;font-size:12px;margin-bottom:8px">📍 أين أنت الآن</div>
+       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+         <div style="background:${eg[1]==='var(--gr)'?'var(--grl)':'#eef1f5'};border-radius:10px;padding:12px"><div style="font-size:11px;color:var(--mu)">الأهلية</div><div style="font-size:18px;font-weight:800;color:${eg[1]}">${eg[0]}</div><div style="font-size:10px;color:var(--mu)">${eg[2]}</div></div>
+         <div style="background:var(--aml);border-radius:10px;padding:12px"><div style="font-size:11px;color:var(--mu)">مستوى الخطورة</div><div style="font-size:18px;font-weight:800;color:var(--am)">${p.caregiver?'—':p.score+'%'}</div><div style="font-size:10px;color:var(--mu)">حسب الذكاء الاصطناعي</div></div>
+         <div style="background:var(--bll);border-radius:10px;padding:12px"><div style="font-size:11px;color:var(--mu)">الجرعة الأولى</div><div style="font-size:15px;font-weight:800;color:var(--bl)">${p.d1==='—'?'لم تُعطَ':p.d1}</div></div>
+         <div style="background:${p.st==='Complete'?'var(--grl)':'var(--rdl)'};border-radius:10px;padding:12px"><div style="font-size:11px;color:var(--mu)">الجرعة الثانية</div><div style="font-size:14px;font-weight:800;color:${p.st==='Complete'?'var(--grd)':'var(--rd)'}">${p.st==='Complete'?'مكتملة ✓':p.f==='d2over'?'متأخرة':'قادمة'}</div></div>
+       </div>
+       <div style="font-weight:700;font-size:12px;margin-bottom:8px">💬 معلومات مهمة</div>
+       <ul style="font-size:12px;color:var(--mu);line-height:1.9;padding-right:18px;margin-bottom:14px">
+         <li>${p.elig.ok?'أنت مؤهل للقاح الحزام الناري — يحميك من ألم الأعصاب المزمن.':'سنساعدك في معرفة الخيارات المناسبة لك.'}</li>
+         <li>اللقاح جرعتان — ${p.immuno?'بفارق شهر إلى شهرين':'بفارق شهرين إلى ستة أشهر'}. كلتا الجرعتين مهمتان للحماية الكاملة.</li>
+         <li>بعد التطعيم: ألم بسيط بالذراع أو تعب ليوم أو يومين أمر طبيعي ويزول وحده.</li>
+       </ul>
+       <div style="font-weight:700;font-size:12px;margin-bottom:8px">👇 مستوى المتابعة</div>
+       <div style="background:${fu[1]==='var(--rd)'?'var(--rdl)':fu[1]==='var(--am)'?'var(--aml)':'var(--grl)'};border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px"><span style="background:${fu[1]};color:#fff;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;white-space:nowrap">${fu[0]}</span><span style="font-size:12px;color:var(--mu)">${fu[2]}</span></div>
+     </div>
+   </div>`;
   document.getElementById('patModal').classList.add('open');}
 function closePat(){document.getElementById('patModal').classList.remove('open');}
 document.getElementById('patModal').onclick=e=>{if(e.target.id==='patModal')closePat();};
@@ -762,6 +824,21 @@ Chart.defaults.font.family='system-ui';Chart.defaults.color='#6b7280';Chart.defa
 new Chart(document.getElementById('trendChart'),{type:'line',data:{labels:['W1','W2','W3','W4','W5','W6','W7','W8'],datasets:[{label:'Dose 1',data:[280,540,820,1120,1410,1680,1890,2061],borderColor:'#378add',backgroundColor:'rgba(55,138,221,.1)',fill:true,tension:.4},{label:'Complete',data:[80,210,380,560,760,960,1120,1247],borderColor:'#5aaa1e',backgroundColor:'rgba(90,170,30,.1)',fill:true,tension:.4}]},options:{plugins:{legend:{labels:{boxWidth:11}}},scales:{x:{grid:{display:false}},y:{grid:{color:'#eef0f4'}}}}});
 new Chart(document.getElementById('segChart'),{type:'doughnut',data:{labels:['Diabetic 50+','Immunocompromised','General 50+'],datasets:[{data:[patients.filter(p=>p.rk==='SD').length,patients.filter(p=>p.rk==='SI').length,patients.filter(p=>p.rk==='SG').length],backgroundColor:['#378add','#7c4dff','#8a98a8'],borderColor:'#fff',borderWidth:3}]},options:{cutout:'60%',plugins:{legend:{position:'bottom',labels:{boxWidth:11,padding:11}}}}});
 new Chart(document.getElementById('barrierChart'),{type:'bar',data:{labels:['Safety fear','Complacency','Side-effect worry','Access','Already had it','Ask doctor','Dose-2 lapse'],datasets:[{label:'% of declines',data:[31,24,18,15,12,9,7],backgroundColor:['#e24b4a','#ef9f27','#378add','#1d9e75','#7c4dff','#5aaa1e','#9ca3af']}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'#eef0f4'}},y:{grid:{display:false}}}}});
+
+/* dashboard population charts */
+(function(){
+ const band=[0,0,0,0];patients.forEach(p=>{const s=p.caregiver?10:p.score;if(s<30)band[0]++;else if(s<50)band[1]++;else if(s<70)band[2]++;else band[3]++;});
+ new Chart(document.getElementById('riskDistChart'),{type:'bar',data:{labels:['Low <30','Moderate 30–49','High 50–69','Very high 70+'],datasets:[{label:'Patients',data:band,backgroundColor:['#5aaa1e','#378add','#ef9f27','#e24b4a']}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'#eef0f4'}}}}});
+ const profs=['SD','SI','SG'],tiers={High:[0,0,0],Moderate:[0,0,0],Low:[0,0,0]};
+ patients.forEach(p=>{const j=profs.indexOf(p.rk);if(j<0)return;const t=(p.tier==='High'||p.tier==='Very High')?'High':p.tier==='Moderate'?'Moderate':'Low';tiers[t][j]++;});
+ new Chart(document.getElementById('stratChart'),{type:'bar',data:{labels:['Diabetic 50+','Immunocompromised','General 50+'],datasets:[{label:'High',data:tiers.High,backgroundColor:'#e24b4a'},{label:'Moderate',data:tiers.Moderate,backgroundColor:'#ef9f27'},{label:'Low',data:tiers.Low,backgroundColor:'#5aaa1e'}]},options:{plugins:{legend:{labels:{boxWidth:11}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#eef0f4'}}}}});
+ const sc={none:0,d1:0,d2win:0,d2over:0,done:0,caregiver:0};patients.forEach(p=>sc[p.f]++);
+ new Chart(document.getElementById('statusChart'),{type:'bar',data:{labels:['No dose','Dose 1','D2 window','D2 overdue','Complete','Caregiver'],datasets:[{label:'Patients',data:[sc.none,sc.d1,sc.d2win,sc.d2over,sc.done,sc.caregiver],backgroundColor:['#9ca3af','#378add','#ef9f27','#e24b4a','#5aaa1e','#7c4dff']}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'#eef0f4'}}}}});
+ const cn=PHCs.map(x=>x.n),tot={},vac={};cn.forEach(n=>{tot[n]=0;vac[n]=0;});patients.forEach(p=>{tot[p.phc]=(tot[p.phc]||0)+1;if(['done','d1','d2win','d2over'].includes(p.f))vac[p.phc]=(vac[p.phc]||0)+1;});
+ new Chart(document.getElementById('centreChart'),{type:'bar',data:{labels:cn.map(n=>n.split(',')[0]),datasets:[{label:'Dose 1 %',data:cn.map(n=>tot[n]?Math.round((vac[n]||0)/tot[n]*100):0),backgroundColor:'#378add'}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'#eef0f4'},max:100}}}});
+ const eg=[patients.filter(p=>p.elig.ok).length,patients.filter(p=>p.caregiver).length,patients.filter(p=>!p.elig.ok&&!p.caregiver).length];
+ new Chart(document.getElementById('eligChart'),{type:'doughnut',data:{labels:['Eligible','Caregiver','Not eligible'],datasets:[{data:eg,backgroundColor:['#5aaa1e','#7c4dff','#9ca3af'],borderColor:'#fff',borderWidth:3}]},options:{cutout:'58%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:10}}}}}});
+})();
 
 /* ===== Compose ===== */
 const segs=[{n:'Diabetic 50+',m:'مرحباً 👋 لأنك مصاب بالسكري، خطر الحزام الناري لديك أعلى. لقاح شينجريكس (جرعتان) يحميك. احجز: 🔗 jusoor.health/shingrix'},
@@ -800,7 +877,7 @@ const B={start(){chat.innerHTML='';typing(()=>{add('أهلاً بك 👋 أنا 
 function botRestart(){B._im=false;B.start();}
 
 /* ===== init ===== */
-renderReg();refreshMetrics();renderHuddle();renderTasks('all');renderVC();renderInbox();renderEdu();pickSeg(0);botRestart();renderWiz();
+renderReg();refreshMetrics();renderHuddle();renderTasks('all');renderVC();renderInbox();renderEdu();pickSeg(0);botRestart();renderWiz();restoreSession();
 if(convos.length)openConv(0);
 </script>
 </body>

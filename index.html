@@ -208,14 +208,25 @@ body{background:var(--bg);display:flex;height:100vh;overflow:hidden;-webkit-font
     <div style="text-align:center"><div style="display:inline-flex;align-items:center;gap:9px"><div class="logoBig jlogo" style="width:38px;height:38px;border-radius:9px"><svg class="brideSVG" viewBox="0 0 64 64" style="width:70%;height:70%" fill="none"><path d="M5 43h54" stroke-width="4" stroke-linecap="round"/><path d="M14 43V24M50 43V24" stroke-width="3" stroke-linecap="round"/><path d="M7 31C19 16 45 16 57 31" stroke-width="3.5" stroke-linecap="round"/><path d="M22 17l-3 26M42 17l3 26M32 15v28" stroke-width="2" stroke-linecap="round" opacity=".8"/></svg></div><div style="text-align:left"><div style="font-size:21px;font-weight:800;color:#13254a">Jusoor</div><div style="font-size:9px;color:#6b7790;letter-spacing:3px">جسور · GSK SHINGRIX</div></div></div></div>
     <div style="font-size:12px;color:#6b7790;text-align:center;margin:14px 0 16px">Sign in to the immunisation platform</div>
     <div style="background:#fff7e6;border:1px solid #f3d699;color:#9a6b00;font-size:10px;border-radius:8px;padding:8px 10px;margin-bottom:14px;line-height:1.5">🔒 Demo environment — 100% synthetic data. Do not enter real patient identifiers.</div>
+    <div id="lgForm">
+    <label style="font-size:11px;font-weight:700">Cluster</label>
+    <select id="lgCluster" onchange="lgNames()" style="width:100%;padding:9px;border:1px solid #e3e8f2;border-radius:8px;margin:4px 0 12px;font-size:13px"></select>
     <label style="font-size:11px;font-weight:700">Role</label>
     <select id="lgRole" onchange="lgNames()" style="width:100%;padding:9px;border:1px solid #e3e8f2;border-radius:8px;margin:4px 0 12px;font-size:13px"><option>PHC Coordinator</option><option>Physician</option><option>Immunisation Nurse</option><option>Programme Manager</option></select>
-    <label style="font-size:11px;font-weight:700">Name</label>
+    <label style="font-size:11px;font-weight:700">Account</label>
     <select id="lgName" style="width:100%;padding:9px;border:1px solid #e3e8f2;border-radius:8px;margin:4px 0 12px;font-size:13px"></select>
     <label style="font-size:11px;font-weight:700">Password</label>
     <input type="password" value="demo" style="width:100%;padding:9px;border:1px solid #e3e8f2;border-radius:8px;margin:4px 0 16px;font-size:13px">
-    <button onclick="doLogin()" style="width:100%;padding:11px;background:#1c3a6e;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer">Sign in</button>
-    <div style="font-size:10px;color:#9ca3af;text-align:center;margin-top:12px">Authorised access only · Riyadh PHC Cluster</div>
+    <button onclick="requestOtp()" style="width:100%;padding:11px;background:#1c3a6e;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer">Sign in</button>
+    </div>
+    <div id="otpBox" style="display:none">
+      <div style="background:#eef5ff;border:1px solid #cfe0fb;color:#1c3a6e;font-size:11px;border-radius:8px;padding:9px 11px;margin-bottom:12px;line-height:1.5">📲 A 6-digit code was sent to the account's registered phone. <b>Demo code: 123456</b></div>
+      <label style="font-size:11px;font-weight:700">Verification code (OTP)</label>
+      <input id="otpInput" maxlength="6" inputmode="numeric" placeholder="••••••" style="width:100%;padding:11px;border:1px solid #e3e8f2;border-radius:8px;margin:4px 0 14px;font-size:20px;text-align:center;letter-spacing:8px">
+      <button onclick="verifyOtp()" style="width:100%;padding:11px;background:#1c3a6e;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer">Verify &amp; sign in</button>
+      <div style="text-align:center;margin-top:10px"><span onclick="document.getElementById('otpBox').style.display='none';document.getElementById('lgForm').style.display='block'" style="font-size:11px;color:#6b7790;cursor:pointer">← Back</span></div>
+    </div>
+    <div style="font-size:10px;color:#9ca3af;text-align:center;margin-top:12px">Authorised access · per-cluster accounts · OTP-secured</div>
   </div>
 </div>
 
@@ -295,7 +306,7 @@ body{background:var(--bg);display:flex;height:100vh;overflow:hidden;-webkit-font
 <div class="view" id="v-registry">
   <div class="card cp">
     <div class="ch"><div><div class="ct">Patient Registry · <span id="regN">50</span> enrolled</div><div class="cs">AI risk scored locally · click a row for the full record</div></div><div style="display:flex;gap:7px"><button class="btn btn-o btn-xs" onclick="show('enrol')">＋ Enrol</button><button class="btn btn-o btn-xs" onclick="toast('Exported ✓','De-identified CSV for GSK')">⬇ Export</button></div></div>
-    <div class="tbl-w"><table class="tbl"><thead><tr><th>Patient</th><th>File #</th><th>Age</th><th>Risk profile</th><th>AI risk</th><th>Eligibility</th><th>Dose 1</th><th>Dose 2</th><th>Status</th><th>Physician</th></tr></thead><tbody id="regBody"></tbody></table></div>
+    <div class="tbl-w"><table class="tbl"><thead><tr><th>Patient</th><th>File #</th><th>Age</th><th>Risk profile</th><th>Comorbidities</th><th>Allergy</th><th>Insurance</th><th>AI risk</th><th>Eligibility</th><th>Dose 1</th><th>Dose 2</th><th>Status</th><th>Physician</th></tr></thead><tbody id="regBody"></tbody></table></div>
   </div>
 </div>
 
@@ -491,18 +502,30 @@ body{background:var(--bg);display:flex;height:100vh;overflow:hidden;-webkit-font
 
 <script>
 /* ===== Login ===== */
-const NAMES={'PHC Coordinator':['Sarah Al-Ghamdi','Nora Al-Harbi'],'Physician':['Dr. Khalid Al-Ghamdi','Dr. Mona Al-Subaie'],'Immunisation Nurse':['Nurse Mona Al-Zahrani','Reem Al-Anzi'],'Programme Manager':['Yousef Al-Rashid']};
-function lgNames(){const r=document.getElementById('lgRole').value;document.getElementById('lgName').innerHTML=NAMES[r].map(n=>`<option>${n}</option>`).join('');}
-function applySession(r,n){document.getElementById('sbRole').textContent=r+' · Riyadh';document.getElementById('sbUn').textContent=n;
+const CLUSTERS=['Riyadh','Jeddah','Makkah','Dammam','Eastern Province'];
+const CLUSTER_STAFF={
+ 'Riyadh':{'PHC Coordinator':['Sarah Al-Ghamdi','Nora Al-Harbi'],'Physician':['Dr. Khalid Al-Ghamdi'],'Immunisation Nurse':['Nurse Mona Al-Zahrani'],'Programme Manager':['Yousef Al-Rashid']},
+ 'Jeddah':{'PHC Coordinator':['Aisha Al-Sahli','Lama Al-Maliki'],'Physician':['Dr. Faisal Al-Harbi'],'Immunisation Nurse':['Nurse Hessa Al-Dosari'],'Programme Manager':['Yousef Al-Rashid']},
+ 'Makkah':{'PHC Coordinator':['Huda Al-Zahrani'],'Physician':['Dr. Aisha Al-Zahrani'],'Immunisation Nurse':['Nurse Latifa Al-Shahri'],'Programme Manager':['Yousef Al-Rashid']},
+ 'Dammam':{'PHC Coordinator':['Reem Al-Qahtani'],'Physician':['Dr. Omar Al-Qahtani'],'Immunisation Nurse':['Nurse Amal Al-Anzi'],'Programme Manager':['Yousef Al-Rashid']},
+ 'Eastern Province':{'PHC Coordinator':['Mona Al-Mutairi'],'Physician':['Dr. Sami Al-Dosari'],'Immunisation Nurse':['Nurse Hind Al-Buqami'],'Programme Manager':['Yousef Al-Rashid']},
+};
+(function(){var s=document.getElementById('lgCluster');if(s)s.innerHTML=CLUSTERS.map(c=>`<option>${c}</option>`).join('');})();
+function lgNames(){const c=(document.getElementById('lgCluster')||{}).value||'Riyadh',r=document.getElementById('lgRole').value;const list=(CLUSTER_STAFF[c]&&CLUSTER_STAFF[c][r])||[];document.getElementById('lgName').innerHTML=list.map(n=>`<option>${n}</option>`).join('');}
+function requestOtp(){if(!document.getElementById('lgName').value){toast('Select an account');return;}document.getElementById('lgForm').style.display='none';document.getElementById('otpBox').style.display='block';setTimeout(()=>document.getElementById('otpInput').focus(),50);}
+function verifyOtp(){const code=document.getElementById('otpInput').value.trim();if(code.length<4){toast('Enter the 6-digit code','Demo code: 123456');return;}doLogin();}
+function applySession(r,n,c){c=c||'Riyadh';document.getElementById('sbRole').textContent=r+' · '+c;document.getElementById('sbUn').textContent=n;
   document.getElementById('sbAv').textContent=n.replace(/^(Dr\.|Nurse)\s/,'').split(' ').map(x=>x[0]).join('').slice(0,2);
-  document.getElementById('login').style.display='none';}
-function doLogin(){const r=document.getElementById('lgRole').value,n=document.getElementById('lgName').value;
-  try{localStorage.setItem('jusoor_sess',JSON.stringify({r,n}));}catch(e){}
-  applySession(r,n);}
+  document.getElementById('login').style.display='none';
+  var ob=document.getElementById('otpBox'),lf=document.getElementById('lgForm');if(ob)ob.style.display='none';if(lf)lf.style.display='block';
+  var oi=document.getElementById('otpInput');if(oi)oi.value='';}
+function doLogin(){const c=document.getElementById('lgCluster').value,r=document.getElementById('lgRole').value,n=document.getElementById('lgName').value;
+  try{localStorage.setItem('jusoor_sess',JSON.stringify({r,n,c}));}catch(e){}
+  applySession(r,n,c);}
 function logout(){try{localStorage.removeItem('jusoor_sess');}catch(e){}document.getElementById('login').style.display='flex';}
 function applyLogo(url){document.querySelectorAll('.jlogo').forEach(el=>{el.innerHTML='<img src="'+url+'" style="width:100%;height:100%;object-fit:cover;border-radius:inherit" alt="logo">';});}
 function uploadLogo(inp){const f=inp.files&&inp.files[0];if(!f)return;const rd=new FileReader();rd.onload=e=>{applyLogo(e.target.result);try{localStorage.setItem('jusoor_logo',e.target.result);}catch(x){}toast('Logo updated ✓','Saved — applied to header & login');};rd.readAsDataURL(f);}
-function restoreSession(){try{const lg=localStorage.getItem('jusoor_logo');if(lg)applyLogo(lg);const s=localStorage.getItem('jusoor_sess');if(s){const o=JSON.parse(s);applySession(o.r,o.n);}}catch(e){}}
+function restoreSession(){try{const lg=localStorage.getItem('jusoor_logo');if(lg)applyLogo(lg);const s=localStorage.getItem('jusoor_sess');if(s){const o=JSON.parse(s);applySession(o.r,o.n,o.c);}}catch(e){}}
 lgNames();
 
 /* ===== AI RULE ENGINE (local) ===== */
@@ -560,6 +583,11 @@ function statusMap(f,immuno,score){
   if(f==='caregiver')return{st:'Caregiver lead',sb:'rM',pri:'wM',act:'Call — arrange relative',d1:'n/a',d2:'n/a'};
   return{st:'No dose',sb:score>=70?'rH':'rM',pri:score>=70?'wU':'wM',act:score>=70?'Call — high-risk, no dose':'Send registration link',d1:'—',d2:'—'};
 }
+const ALLERGIES=['No known allergies','No known allergies','No known allergies','Penicillin','Sulfa drugs','Eggs','Latex','Aspirin / NSAIDs','Neomycin','Iodine / contrast media'];
+const INSURERS=['Bupa Arabia','Tawuniya','MedGulf','Al Rajhi Takaful','MOH (national programme)','Self-pay'];
+const DEPTS=['Immunization Clinic','Family Medicine','Internal Medicine','Endocrine','Chronic Care'];
+const HOSPITALS=['King Fahad Medical City','King Saud Medical City','Al Olaya PHC','Al Naseem PHC','King Abdulaziz Hospital'];
+const VISIT_TYPES=['Vaccination','Scheduled','Follow-up','Tele-consult','Walk-in'];
 const patients=[];const used=new Set();
 function makePatient(i,opt){
   opt=opt||{};
@@ -582,10 +610,22 @@ function makePatient(i,opt){
   const symptom=vaccinated?pk(SYMPT):'—';
   const aefiFlag=vaccinated&&['Low-grade fever','Redness at site','Myalgia'].includes(symptom);
   const edu={};EDU.forEach(t=>edu[t]=ch(0.55));
+  const allergy=pk(ALLERGIES),nka=allergy==='No known allergies';
+  const insurance=cond.length&&ch(.25)?'MOH (national programme)':pk(INSURERS);
+  const dept=ch(.7)?'Immunization Clinic':pk(DEPTS);
+  const fallRisk=age>=78?'High':age>=68?'Moderate':'Low';
+  const weight=55+Math.floor(rnd()*45),height=152+Math.floor(rnd()*30);
+  const bmi=(weight/Math.pow(height/100,2)).toFixed(1);
+  const bp=(110+Math.floor(rnd()*40))+'/'+(70+Math.floor(rnd()*20));
+  const temp=(36.4+rnd()*0.8).toFixed(1),hr=64+Math.floor(rnd()*28);
+  const diag=cond.length?cond.map(c=>COND[c]?COND[c].label:c).join(', '):(age>=50?'Healthy adult — age-based eligibility':'Adult immunisation');
+  const allDates=D_EARLY.concat(D_MID,D_LATE);const visits=[];const vN=1+Math.floor(rnd()*3);
+  for(let v=0;v<vN;v++)visits.push({type:pk(VISIT_TYPES),dept,date:pk(allDates),status:pk(['Completed','Completed','Scheduled','No-show']),doc:PHCs[i%PHCs.length].doc,coord:'Mona Al-Zahrani',ins:insurance});
   return {id:i,n:fn[0]+' '+ln[0],en:fn[1]+' '+ln[1],file:'JSR-'+(204000+i*17+Math.floor(rnd()*9)),sex,age,cond,caregiver,
     phc:PHCs[i%PHCs.length].n,doc:PHCs[i%PHCs.length].doc,risk:profile,rk,ab:'av'+rk,
     elig:eligibility({age,cond,caregiver}),score:a.score,tier:caregiver?'—':a.tier,drivers:a.drivers,schedule:a.schedule,immuno,
-    f,st:sm.st,sb:sm.sb,pri:sm.pri,act:sm.act,d1:sm.d1,d2:sm.d2,last:pk(LASTS),symptom,aefiFlag,edu,disc:[]};
+    f,st:sm.st,sb:sm.sb,pri:sm.pri,act:sm.act,d1:sm.d1,d2:sm.d2,last:pk(LASTS),symptom,aefiFlag,edu,disc:[],
+    allergy,nka,allergyDate:nka?'—':pk(D_EARLY),allergyHospital:nka?'—':pk(HOSPITALS),insurance,dept,fallRisk,weight,height,bmi,bp,temp,hr,diag,visits};
 }
 for(let i=0;i<50;i++)patients.push(makePatient(i));
 
@@ -613,7 +653,7 @@ function toast(m,s){const t=document.getElementById('toast');document.getElement
 /* ===== Registry ===== */
 function scorePill(p){if(p.caregiver)return '<span class="chip ch-p">Caregiver</span>';const c=(p.tier==='Very High'||p.tier==='High')?'rH':p.tier==='Moderate'?'rM':'rL';return `<span class="tag ${c}">${p.score} · ${p.tier}</span>`;}
 function eligChip(p){return p.elig.ok?'<span class="chip ch-g">Eligible</span>':p.caregiver?'<span class="chip ch-p">Caregiver</span>':'<span class="chip ch-s">Not eligible</span>';}
-function renderReg(){document.getElementById('regBody').innerHTML=patients.map(p=>`<tr onclick="openPat(${p.id})"><td style="font-weight:600">${p.en}</td><td style="font-size:11px;color:var(--mu)">${p.file}</td><td>${p.age}</td><td><span class="tag ${p.rk}">${p.risk}</span></td><td>${scorePill(p)}</td><td>${eligChip(p)}</td><td style="font-size:11px">${p.d1}</td><td style="font-size:11px">${p.d2}</td><td><span class="tag ${p.sb}">${p.st}</span></td><td style="font-size:11px">${p.doc}</td></tr>`).join('');
+function renderReg(){document.getElementById('regBody').innerHTML=patients.map(p=>`<tr onclick="openPat(${p.id})"><td style="font-weight:600">${p.en}</td><td style="font-size:11px;color:var(--mu)">${p.file}</td><td>${p.age}</td><td><span class="tag ${p.rk}">${p.risk}</span></td><td style="font-size:11px">${p.cond.length?p.cond.map(c=>COND[c]?COND[c].label.replace(/ \(.*\)/,''):c).join(', '):'—'}</td><td>${p.nka?'<span class="chip ch-g">NKA</span>':'<span class="chip ch-r">'+p.allergy+'</span>'}</td><td style="font-size:11px">${p.insurance}</td><td>${scorePill(p)}</td><td>${eligChip(p)}</td><td style="font-size:11px">${p.d1}</td><td style="font-size:11px">${p.d2}</td><td><span class="tag ${p.sb}">${p.st}</span></td><td style="font-size:11px">${p.doc}</td></tr>`).join('');
   document.getElementById('regN').textContent=patients.length;document.getElementById('bReg').textContent=patients.length;document.getElementById('kEnr').textContent=patients.length;document.getElementById('regN2')&&0;}
 
 /* ===== Dashboard metrics ===== */
@@ -712,7 +752,7 @@ function vcPick(i){vcSel=i;const c=consults[i],p=c.p;
 /* ===== Enrol wizard (live risk assessment) ===== */
 const WSTEPS=['Demographics','Risk & Immunity','Vaccination History','AI Review'];
 const REASONS=['Eligible adult 50+','Immunocompromised adult 18+','Diabetic 50+ — elevated zoster risk','Cancer / chemotherapy patient','Organ transplant recipient','On immunosuppressive therapy','Caregiver referral','Post-shingles — prevent recurrence','Routine adult immunisation','Pharmacy / workplace referral'];
-const wiz={step:1,name:'',mrn:'',age:'',sex:'Male',phc:PHCs[0].n,coordinator:'Mona Al-Zahrani',reason:'',cond:[],priorShingles:'no',shinglesDate:'',priorVaccine:'no',zosterDate:'',zosterInfo:'',hasD1:'no',d1date:''};
+const wiz={step:1,name:'',mrn:'',age:'',sex:'Male',phc:PHCs[0].n,coordinator:'Mona Al-Zahrani',reason:'',insurance:'Bupa Arabia',dept:'Immunization Clinic',visitDate:'',cond:[],allergy:'No known allergies',allergyDate:'',hospital:'',priorShingles:'no',shinglesDate:'',priorVaccine:'no',zosterDate:'',zosterInfo:'',hasD1:'no',d1date:''};
 function setW(k,v){wiz[k]=v;updateLive();}
 function setWR(k,v){wiz[k]=v;renderWiz();}
 function toggleCond(k,el){if(el.checked){if(!wiz.cond.includes(k))wiz.cond.push(k);}else{wiz.cond=wiz.cond.filter(c=>c!==k);}updateLive();}
@@ -730,11 +770,13 @@ function renderWiz(){
     h=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div class="fsec" style="border:none;margin:0;padding:0">Patient demographics</div><button class="btn btn-o btn-xs" onclick="importRaqeem()">⬇ Import from Raqeem (NPHIES)</button></div>
     <div class="g2">${fld('Full name (English)',`<input value="${wiz.name}" oninput="setW('name',this.value)" placeholder="e.g. Mohammed Al-Otaibi">`)}${fld('MRN / National ID',`<input value="${wiz.mrn}" oninput="setW('mrn',this.value)" placeholder="SA-XXXX">`)}</div>
     <div class="g3">${fld('Age',`<select onchange="setW('age',this.value)"><option value="">— select —</option>${Array.from({length:83},(_,k)=>18+k).map(n=>`<option ${String(wiz.age)===String(n)?'selected':''}>${n}</option>`).join('')}</select>`)}${fld('Sex',`<select onchange="setW('sex',this.value)"><option ${wiz.sex==='Male'?'selected':''}>Male</option><option ${wiz.sex==='Female'?'selected':''}>Female</option></select>`)}${fld('PHC centre',`<select onchange="setW('phc',this.value)">${PHCs.map(p=>`<option ${wiz.phc===p.n?'selected':''}>${p.n}</option>`).join('')}</select>`)}</div>
-    <div class="g2">${fld('Immunization coordinator',`<input value="${wiz.coordinator}" oninput="setW('coordinator',this.value)">`)}${fld('Reason for enrolment',`<input list="reasonList" value="${wiz.reason}" oninput="setW('reason',this.value)" placeholder="Type or pick…"><datalist id="reasonList">${REASONS.map(r=>`<option>${r}</option>`).join('')}</datalist>`)}</div>`;
+    <div class="g2">${fld('Immunization coordinator',`<input value="${wiz.coordinator}" oninput="setW('coordinator',this.value)">`)}${fld('Reason for enrolment',`<input list="reasonList" value="${wiz.reason}" oninput="setW('reason',this.value)" placeholder="Type or pick…"><datalist id="reasonList">${REASONS.map(r=>`<option>${r}</option>`).join('')}</datalist>`)}</div>
+    <div class="g3">${fld('Insurance',`<select onchange="setW('insurance',this.value)">${INSURERS.map(x=>`<option ${wiz.insurance===x?'selected':''}>${x}</option>`).join('')}</select>`)}${fld('Department',`<select onchange="setW('dept',this.value)">${DEPTS.map(x=>`<option ${wiz.dept===x?'selected':''}>${x}</option>`).join('')}</select>`)}${fld('Date of visit / call',`<input type="date" value="${wiz.visitDate}" onchange="setW('visitDate',this.value)">`)}</div>`;
   } else if(wiz.step===2){
     h=`<div class="fsec">Risk factors & immune status</div><div style="font-size:11px;color:var(--mu);margin-bottom:8px">Tick all that apply — immunocompromising conditions make a patient eligible from age 18.</div>
     <div class="med-grid">${Object.keys(COND).map(k=>`<label class="med"><input type="checkbox" ${wiz.cond.includes(k)?'checked':''} onchange="toggleCond('${k}',this)"><div><b>${COND[k].label}</b><small>${COND[k].imm?'Immunocompromising · eligible 18+':'Comorbidity · raises risk'}</small></div></label>`).join('')}</div>
-    <div class="g2" style="margin-top:12px">${fld('Had shingles before?',`<select onchange="setWR('priorShingles',this.value)"><option value="no" ${wiz.priorShingles==='no'?'selected':''}>No</option><option value="yes" ${wiz.priorShingles==='yes'?'selected':''}>Yes</option></select>`)}${wiz.priorShingles==='yes'?fld('When (approx)?',`<input type="date" value="${wiz.shinglesDate}" onchange="setW('shinglesDate',this.value)">`):'<div></div>'}</div>
+    <div class="g3" style="margin-top:12px">${fld('Allergy',`<select onchange="setWR('allergy',this.value)">${[...new Set(ALLERGIES)].map(x=>`<option ${wiz.allergy===x?'selected':''}>${x}</option>`).join('')}</select>`)}${wiz.allergy!=='No known allergies'?fld('Allergy noted (date)',`<input type="date" value="${wiz.allergyDate}" onchange="setW('allergyDate',this.value)">`):'<div></div>'}${wiz.allergy!=='No known allergies'?fld('Hospital / where',`<select onchange="setW('hospital',this.value)"><option value="">— select —</option>${HOSPITALS.map(x=>`<option ${wiz.hospital===x?'selected':''}>${x}</option>`).join('')}</select>`):'<div></div>'}</div>
+    <div class="g2">${fld('Had shingles before?',`<select onchange="setWR('priorShingles',this.value)"><option value="no" ${wiz.priorShingles==='no'?'selected':''}>No</option><option value="yes" ${wiz.priorShingles==='yes'?'selected':''}>Yes</option></select>`)}${wiz.priorShingles==='yes'?fld('When (approx)?',`<input type="date" value="${wiz.shinglesDate}" onchange="setW('shinglesDate',this.value)">`):'<div></div>'}</div>
     <div class="g2">${fld('Previous zoster vaccine?',`<select onchange="setWR('priorVaccine',this.value)"><option value="no" ${wiz.priorVaccine==='no'?'selected':''}>No</option><option value="yes" ${wiz.priorVaccine==='yes'?'selected':''}>Yes</option></select>`)}${wiz.priorVaccine==='yes'?fld('Vaccine date',`<input type="date" value="${wiz.zosterDate}" onchange="setW('zosterDate',this.value)">`):'<div></div>'}</div>
     ${wiz.priorVaccine==='yes'?fld('Which vaccine & where given',`<input value="${wiz.zosterInfo}" oninput="setW('zosterInfo',this.value)" placeholder="e.g. Zostavax · Al-Olaya PHC — helps time the next dose">`):''}
     <div class="note">Prior shingles or a previous vaccine do <b>not</b> remove eligibility — Shingrix is still recommended.</div>`;
@@ -767,7 +809,8 @@ function enrolNow(){
   patients.push({id:i,n:wiz.name,en:wiz.name,file:wiz.mrn||('JSR-'+(204900+i)),sex:wiz.sex==='Female'?'F':'M',age,cond:wiz.cond.slice(),caregiver:false,
     phc:wiz.phc,doc:(PHCs.find(x=>x.n===wiz.phc)||{}).doc||wiz.coordinator,coordinator:wiz.coordinator,risk:a.immuno?'Immunocompromised':(wiz.cond.includes('diabetes')&&age>=50?'Diabetic 50+':'General 50+'),rk,ab:'av'+rk,
     elig:el,score:a.score,tier:a.tier,drivers:a.drivers,schedule:a.schedule,immuno:a.immuno,
-    f,st:sm.st,sb:sm.sb,pri:sm.pri,act:sm.act,d1:wiz.hasD1==='yes'?(wiz.d1date||'recent'):'—',d2:wiz.hasD1==='yes'?(a.immuno?'Schedule (short)':'Schedule'):'—',last:'Today',symptom:'—',aefiFlag:false,edu:{},disc:[]});
+    f,st:sm.st,sb:sm.sb,pri:sm.pri,act:sm.act,d1:wiz.hasD1==='yes'?(wiz.d1date||'recent'):'—',d2:wiz.hasD1==='yes'?(a.immuno?'Schedule (short)':'Schedule'):'—',last:'Today',symptom:'—',aefiFlag:false,edu:{},disc:[],
+    allergy:wiz.allergy,nka:wiz.allergy==='No known allergies',allergyDate:wiz.allergyDate||'—',allergyHospital:wiz.hospital||'—',insurance:wiz.insurance,dept:wiz.dept,fallRisk:age>=78?'High':age>=68?'Moderate':'Low',weight:70,height:165,bmi:'25.7',bp:'120/80',temp:'36.6',hr:76,diag:wiz.cond.length?wiz.cond.map(c=>COND[c]?COND[c].label:c).join(', '):'Adult immunisation',visits:[{type:'Vaccination',dept:wiz.dept,date:wiz.visitDate||'Today',status:'Scheduled',doc:(PHCs.find(x=>x.n===wiz.phc)||{}).doc||wiz.coordinator,coord:wiz.coordinator,ins:wiz.insurance}]});
   renderReg();refreshMetrics();toast('Patient enrolled ✓',wiz.name+' · '+(wiz.mrn||'new MRN'));
   Object.assign(wiz,{step:1,name:'',mrn:'',age:'',cond:[],reason:'',hasD1:'no',d1date:''});renderWiz();show('registry');
 }
@@ -829,6 +872,8 @@ function openPat(id){const p=patients[id];document.getElementById('pmT').textCon
    <div style="flex:1"><div style="font-size:18px;font-weight:800">${p.en} <span class="tag ${p.rk}" style="font-weight:600">${p.risk}</span> ${(p.tier==='High'||p.tier==='Very High')?'<span class="tag rH">High Risk</span>':''}</div>
    <div style="font-size:11px;color:var(--mu);margin-top:3px">${p.age}y ${p.sex} · ${p.file} · ${p.phc} · ${p.doc} · <span class="chip ch-g">Covered</span></div>
    <div style="display:flex;gap:7px;margin-top:9px"><button class="btn btn-p btn-sm" onclick="show('messages')">💬 Message</button><button class="btn btn-g btn-sm" onclick="openSummary(${p.id})">📄 AI Patient Summary</button></div></div></div>
+   <div style="margin-top:12px;border-top:1px solid var(--bdr);padding-top:12px;display:flex;gap:20px;flex-wrap:wrap;font-size:12px;color:var(--mu)"><span>⚖️ Weight <b style="color:var(--tx)">${p.weight}</b> kg</span><span>📏 Height <b style="color:var(--tx)">${p.height}</b> cm</span><span>BMI <b style="color:var(--tx)">${p.bmi}</b></span><span>🩸 BP <b style="color:var(--tx)">${p.bp}</b></span><span>🌡️ Temp <b style="color:var(--tx)">${p.temp}</b>°C</span><span>❤️ HR <b style="color:var(--tx)">${p.hr}</b> bpm</span></div>
+   <div style="margin-top:10px;display:flex;gap:7px;flex-wrap:wrap">${p.nka?'<span class="chip ch-g">✓ No known allergies</span>':'<span class="chip ch-r">⚠ Allergy: '+p.allergy+(p.allergyDate!=='—'?' · '+p.allergyDate:'')+'</span>'}<span class="chip ch-b">🏥 ${p.dept}</span><span class="chip ch-p">🪪 ${p.insurance}</span><span class="chip ch-s">Dx: ${p.diag}</span></div>
    <div class="vit" style="margin-top:14px;grid-template-columns:repeat(6,1fr)"><div><div class="v" style="color:${rc}">${p.caregiver?'—':p.score+'%'}</div><div class="l">AI risk</div></div><div><div class="v" style="font-size:12px;color:${p.elig.ok?'var(--gr)':'var(--mu)'}">${p.elig.ok?'Eligible':'—'}</div><div class="l">Eligibility</div></div><div><div class="v" style="font-size:12px">${p.d1}</div><div class="l">Dose 1</div></div><div><div class="v" style="font-size:12px">${p.d2}</div><div class="l">Dose 2</div></div><div><div class="v" style="font-size:11px">${p.immuno?'1–2 mo':'2–6 mo'}</div><div class="l">Schedule</div></div><div><div class="v" style="font-size:11px">${p.symptom}</div><div class="l">Symptom</div></div></div></div>
    <div class="g2" style="margin-top:14px"><div class="card cp"><div class="ct" style="margin-bottom:8px">RISK FACTORS (${p.cond.length})</div>${condList(p)}</div>
    <div class="card cp"><div class="ct" style="margin-bottom:8px">VACCINATION & FOLLOW-UP</div>
@@ -836,6 +881,7 @@ function openPat(id){const p=patients[id];document.getElementById('pmT').textCon
      <div class="sc"><div class="scd ${p.st==='Complete'?'s-ok':p.f==='d2over'?'s-ov':'s-due'}"></div><b>Dose 2</b><span class="m">${p.d2}</span></div>
      <div class="sc"><div class="scd ${p.aefiFlag?'s-ov':'s-ok'}"></div><b>Post-vaccine symptom</b><span class="m">${p.symptom}</span></div>
      <div class="sc"><div class="scd s-ok"></div><b>Last contact</b><span class="m">${p.last}</span></div></div></div>
+   <div class="card cp" style="margin-top:14px"><div class="ct" style="margin-bottom:10px">VISITS (${p.visits.length})</div><div class="tbl-w"><table class="tbl"><thead><tr><th>Visit type</th><th>Department</th><th>Date</th><th>Status</th><th>Doctor</th><th>Coordinator</th><th>Insurance</th></tr></thead><tbody>${p.visits.map(v=>`<tr><td>${v.type}</td><td>${v.dept}</td><td>${v.date}</td><td><span class="chip ${v.status==='Completed'?'ch-g':v.status==='No-show'?'ch-r':'ch-a'}">${v.status}</span></td><td>${v.doc}</td><td>${v.coord}</td><td style="font-size:11px">${v.ins}</td></tr>`).join('')}</tbody></table></div></div>
    <div class="card cp" style="margin-top:14px;border-color:var(--rdl)"><div class="ct" style="margin-bottom:10px;color:var(--rd)">⚠ AI ALERTS (${A.length}) <span style="font-weight:400;color:var(--mu);font-size:10px">· generated by the local rule engine</span></div>${A.map(x=>`<div style="background:${x.s==='r'?'var(--rdl)':x.s==='a'?'var(--aml)':'var(--grl)'};border-left:3px solid ${x.s==='r'?'var(--rd)':x.s==='a'?'var(--am)':'var(--gr)'};padding:9px 12px;border-radius:7px;margin-bottom:6px;font-size:12px">${x.t}</div>`).join('')}</div>
    <div class="card cp" style="margin-top:14px"><div class="ct" style="margin-bottom:8px">CARE-TEAM COMMUNICATION</div>
      <div style="font-size:12px;color:var(--mu);line-height:1.6"><b style="color:var(--tx)">Sarah Al-Ghamdi</b> <span style="font-size:10px">Care Coordinator · ${p.last}</span><br>${p.f==='d2over'?'Patient called — overdue for Dose 2, will book this week.':p.aefiFlag?'Patient reported '+p.symptom.toLowerCase()+' after dose — reassured, monitoring.':p.f==='caregiver'?'Caregiver enquiry — capturing eligible relative\'s details.':'Enrolled and contacted — engagement ongoing.'}</div>

@@ -376,25 +376,25 @@ body{background:var(--bg);display:flex;height:100vh;overflow:hidden;-webkit-font
 <!-- EDUCATION -->
 <div class="view" id="v-education">
   <div class="g4" style="margin-bottom:14px">
-    <div class="kpi" style="--kc:var(--bl)"><div class="kl">Active caseload</div><div class="kv" id="eduCase">50</div><div class="ks">enrolled</div></div>
-    <div class="kpi" style="--kc:var(--gr)"><div class="kl">Sessions delivered</div><div class="kv" id="eduSessions">0</div><div class="ks">patients reached</div></div>
-    <div class="kpi" style="--kc:var(--am)"><div class="kl">Active goals</div><div class="kv" id="eduGoals">0</div><div class="ks">set</div></div>
-    <div class="kpi" style="--kc:var(--rd)"><div class="kl">Education pending</div><div class="kv" style="color:var(--rd)" id="eduPending">0</div><div class="ks">to deliver</div></div>
+    <div class="kpi" style="--kc:var(--bl)" onclick="showCohort('Active caseload',patients)"><div class="kl">Active caseload</div><div class="kv" id="eduCase">50</div><div class="ks">enrolled · view</div></div>
+    <div class="kpi" style="--kc:var(--gr)" onclick="showCohort('Educated (≥1 topic)',patients.filter(p=>EDU.some(t=>p.edu[t])))"><div class="kl">Sessions delivered</div><div class="kv" id="eduSessions">0</div><div class="ks">patients reached · view</div></div>
+    <div class="kpi" style="--kc:var(--am)" onclick="showCohort('Patients with active goals',patients.filter(p=>EDU.filter(t=>p.edu[t]).length>=3))"><div class="kl">Active goals</div><div class="kv" id="eduGoals">0</div><div class="ks">set · view</div></div>
+    <div class="kpi" style="--kc:var(--rd)" onclick="showCohort('Education pending',patients.filter(p=>!EDU.every(t=>p.edu[t])))"><div class="kl">Education pending</div><div class="kv" style="color:var(--rd)" id="eduPending">0</div><div class="ks">to deliver · view</div></div>
   </div>
   <div class="g2" style="margin-bottom:14px">
     <div class="card cp"><div class="ct" style="margin-bottom:12px">Log education session</div>
-      <div class="fg"><label>Patient</label><input list="eduPtList" placeholder="Select patient…"><datalist id="eduPtList"></datalist></div>
-      <div class="g2"><div class="fg"><label>Session type</label><select><option>Pre-vaccination counselling</option><option>Reactogenicity / what to expect</option><option>Dose 2 importance</option><option>Post-vaccine symptom care</option><option>Booking &amp; reminders</option></select></div><div class="fg"><label>Duration (min)</label><select><option>15</option><option selected>30</option><option>45</option></select></div></div>
-      <div class="fg"><label>Notes</label><textarea rows="3" placeholder="Topics covered, patient understanding, barriers…"></textarea></div>
-      <div style="display:flex;gap:8px"><button class="btn btn-o btn-sm" onclick="toast('AI note drafted ✓')">✦ AI draft note</button><button class="btn btn-g btn-sm" onclick="toast('Session saved ✓')">Save session</button></div>
+      <div class="fg"><label>Patient</label><input id="eduSessPt" list="eduPtList" placeholder="Type name or file #…"><datalist id="eduPtList"></datalist></div>
+      <div class="g2"><div class="fg"><label>Session type</label><select id="eduSessType"><option>Pre-vaccination counselling</option><option>Reactogenicity / what to expect</option><option>Dose 2 importance</option><option>Post-vaccine symptom care</option><option>Booking &amp; reminders</option></select></div><div class="fg"><label>Duration (min)</label><select><option>15</option><option selected>30</option><option>45</option></select></div></div>
+      <div class="fg"><label>Notes</label><textarea id="eduNotes" rows="3" placeholder="Topics covered, patient understanding, barriers…"></textarea></div>
+      <div style="display:flex;gap:8px"><button class="btn btn-o btn-sm" onclick="aiDraftNote()">✦ AI draft note</button><button class="btn btn-g btn-sm" onclick="saveSession()">Save session</button></div>
     </div>
     <div class="card cp"><div class="ct" style="margin-bottom:12px">Set patient goal</div>
-      <div class="fg"><label>Patient</label><input list="eduPtList" placeholder="Select patient…"></div>
-      <div class="fg"><label>Goal category</label><select><option>Complete two-dose series</option><option>Attend Dose 2 on time</option><option>Report symptoms if any</option><option>Understand shingles risk</option></select></div>
-      <div class="fg"><label>Specific goal (SMART)</label><textarea rows="2" placeholder="e.g. Book and attend Dose 2 within the 2–6 month window"></textarea></div>
-      <div style="display:flex;gap:8px;margin-bottom:10px"><button class="btn btn-o btn-sm" onclick="toast('AI SMART goal ✓')">✦ AI SMART goal</button></div>
-      <div class="fg"><label>Target date</label><input type="date"></div>
-      <button class="btn btn-b btn-sm" onclick="toast('Goal set ✓')">Set goal</button>
+      <div class="fg"><label>Patient</label><input id="eduGoalPt" list="eduPtList" placeholder="Type name or file #…"></div>
+      <div class="fg"><label>Goal category</label><select id="eduGoalCat"><option>Complete two-dose series</option><option>Attend Dose 2 on time</option><option>Report symptoms if any</option><option>Understand shingles risk</option></select></div>
+      <div class="fg"><label>Specific goal (SMART)</label><textarea id="eduSmart" rows="2" placeholder="e.g. Book and attend Dose 2 within the 2–6 month window"></textarea></div>
+      <div style="display:flex;gap:8px;margin-bottom:10px"><button class="btn btn-o btn-sm" onclick="aiSmartGoal()">✦ AI SMART goal</button></div>
+      <div class="fg"><label>Target date</label><input type="date" id="eduTarget"></div>
+      <button class="btn btn-b btn-sm" onclick="setGoal()">Set goal</button>
     </div>
   </div>
   <div class="card cp"><div class="ct" style="margin-bottom:10px">Education progress tracker</div><div class="tbl-w"><table class="tbl"><thead><tr><th>Patient</th><th>Profile</th><th>Shingles risk</th><th>What to expect</th><th>Dose 2</th><th>Symptom care</th><th>Booking</th><th>Progress</th></tr></thead><tbody id="eduBody"></tbody></table></div></div>
@@ -750,7 +750,7 @@ function renderTasks(f,btn){
   const groups={};open.forEach(t=>{(groups[t.pid]=groups[t.pid]||[]).push(t);});
   const roleChip=r=>r==='Nurse'?'ch-t':r==='Physician'?'ch-b':r==='Educator'?'ch-p':'ch-s';
   let html=Object.keys(groups).map(pid=>{const p=patients[pid],ts=groups[pid];return `<div style="border:1px solid var(--bdr);border-radius:10px;padding:12px 14px;margin-bottom:8px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px"><div><b>${p?p.en:'—'}</b> <span class="tag ${p?p.rk:''}" style="font-weight:600">${p?p.risk:''}</span> <span style="font-size:11px;color:var(--mu)">${p?p.file:''} · ${p?p.phc:''}</span></div><div style="display:flex;gap:8px;align-items:center"><span style="font-size:11px;color:var(--mu)">${ts.length} item${ts.length>1?'s':''}</span><button class="btn btn-o btn-xs" onclick="openPat(${pid})">Open patient</button></div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px"><div><b>${p?p.en:(pid==='bot'?'📲 WhatsApp leads':'—')}</b> ${p?'<span class="tag '+p.rk+'" style="font-weight:600">'+p.risk+'</span> <span style="font-size:11px;color:var(--mu)">'+p.file+' · '+p.phc+'</span>':'<span style="font-size:11px;color:var(--mu)">via Arabic WhatsApp bot</span>'}</div><div style="display:flex;gap:8px;align-items:center"><span style="font-size:11px;color:var(--mu)">${ts.length} item${ts.length>1?'s':''}</span>${p?'<button class="btn btn-o btn-xs" onclick="openPat('+pid+')">Open patient</button>':''}</div></div>
     <div style="display:flex;flex-wrap:wrap;gap:6px">${ts.map(t=>`<span class="chip ${roleChip(t.role)}" style="padding:5px 10px;gap:6px">${t.t} <span style="color:var(--grd);cursor:pointer;font-weight:700" title="Complete" onclick="completeTask(${tasks.indexOf(t)})">✓</span> <span style="color:var(--rd);cursor:pointer;font-weight:700" title="Dismiss" onclick="completeTask(${tasks.indexOf(t)})">✕</span></span>`).join('')}</div></div>`;}).join('');
   document.getElementById('taskList').innerHTML=html||'<div class="note">No open tasks in this filter.</div>';
   const o=tasks.filter(t=>!t.done).length,d=tasks.filter(t=>t.done).length;
@@ -877,6 +877,34 @@ function renderEdu(){
   document.getElementById('eduBody').innerHTML=patients.slice(0,20).map(p=>{const done=EDU.filter(t=>p.edu[t]).length,pct=Math.round(done/EDU.length*100);return `<tr onclick="openPat(${p.id})"><td style="font-weight:600">${p.en}</td><td><span class="tag ${p.rk}">${p.risk}</span></td>${EDU.map(t=>`<td>${p.edu[t]?'<span class="chip ch-g">✓</span>':'<span style="color:var(--su)">○</span>'}</td>`).join('')}<td><div style="display:flex;align-items:center;gap:6px"><div class="edubar" style="width:54px;flex-shrink:0"><i style="width:${pct}%"></i></div><span style="font-size:11px;color:var(--mu)">${pct}%</span></div></td></tr>`;}).join('');
 }
 
+/* ===== Education AI (local RAG · optional external API in Settings) ===== */
+const EDU_NOTES={
+ 'Pre-vaccination counselling':'Explained shingles risk and that Shingrix is a non-live, 2-dose vaccine. Confirmed eligibility; no contraindications identified. Patient understood and consented. Plan: administer Dose 1 and schedule Dose 2.',
+ 'Reactogenicity / what to expect':'Counselled on expected reactions — sore arm, fatigue, headache, mild fever for 1–2 days that resolve on their own. Advised paracetamol/fluids and to contact us for high fever or rash. Patient reassured.',
+ 'Dose 2 importance':'Reinforced that both doses are needed for full, lasting protection. Confirmed the interval and agreed a booking date. Patient committed to attending Dose 2.',
+ 'Post-vaccine symptom care':'Reviewed post-vaccine symptoms and self-care; advised when to seek help. No concerning features today. Will follow up by WhatsApp in 3 days.',
+ 'Booking & reminders':'Confirmed nearest centre and an available slot; set WhatsApp/SMS reminders. Patient knows how to rebook if the appointment is missed.',
+};
+const EDU_GOALS={
+ 'Complete two-dose series':'Patient will complete both Shingrix doses — Dose 2 booked and attended within the recommended 2–6 month window. Coordinator to confirm booking and send a reminder one week before.',
+ 'Attend Dose 2 on time':'Patient will attend Dose 2 on the scheduled date; reminders sent at 7 and 1 days prior; rebook within one week if missed.',
+ 'Report symptoms if any':'Patient will report any post-vaccine symptoms via WhatsApp within 7 days; nurse to triage and reassure or escalate as needed.',
+ 'Understand shingles risk':'Patient will be able to explain why they are at risk and why both doses matter, confirmed at the next contact.',
+};
+function aiDraftNote(){const pt=document.getElementById('eduSessPt').value,ty=document.getElementById('eduSessType').value;
+  const base=EDU_NOTES[ty]||EDU_NOTES['Pre-vaccination counselling'];
+  document.getElementById('eduNotes').value=(pt?'Patient: '+pt+'\n':'')+base;
+  toast('AI note drafted ✓','Local · editable · no data left device');}
+function aiSmartGoal(){const cat=document.getElementById('eduGoalCat').value,d=document.getElementById('eduTarget');
+  document.getElementById('eduSmart').value=EDU_GOALS[cat]||EDU_GOALS['Complete two-dose series'];
+  if(d&&!d.value){const t=new Date();t.setMonth(t.getMonth()+3);d.value=t.toISOString().slice(0,10);}
+  toast('AI SMART goal ✓','Local · editable');}
+function saveSession(){const pt=document.getElementById('eduSessPt').value;if(!pt){toast('Select a patient first');return;}
+  const p=patients.find(x=>pt.includes(x.file)||pt.includes(x.en));
+  if(p){const ty=document.getElementById('eduSessType').value,map={'Pre-vaccination counselling':'Shingles risk','Reactogenicity / what to expect':'What to expect','Dose 2 importance':'Dose 2 importance','Post-vaccine symptom care':'Symptom care','Booking & reminders':'Booking'};if(map[ty]&&p.edu)p.edu[map[ty]]=true;renderEdu();}
+  toast('Session saved ✓',pt);document.getElementById('eduNotes').value='';}
+function setGoal(){const pt=document.getElementById('eduGoalPt').value;if(!pt){toast('Select a patient first');return;}toast('Goal set ✓',pt);}
+
 /* ===== Patient modal ===== */
 /* Rule-based AI alert engine (like the diabetic platform) */
 function alerts(p){const A=[];
@@ -952,7 +980,15 @@ function logBarrier(pid){const k=document.getElementById('barSel').value,b=BARRI
   renderEdu();renderBarriers();
   toast('Barrier logged ✓','AI → Care Task + '+b.edu+' education');}
 function renderBarriers(){const el=document.getElementById('barFeed');if(!el)return;
-  el.innerHTML=barrierLog.length?barrierLog.slice(0,12).map(x=>{const p=patients[x.pid];return `<div style="border:1px solid var(--bdr);border-radius:9px;padding:10px 12px;margin-bottom:8px"><div style="display:flex;justify-content:space-between"><b style="font-size:12px">${p?p.en:'—'} ${p?'<span class="tag '+p.rk+'" style="font-weight:600">'+p.risk+'</span>':''}</b><span style="font-size:10px;color:var(--mu)">${x.date}</span></div><div style="font-size:12px;color:var(--rd);margin-top:3px">🚧 ${x.label}</div><div style="font-size:11px;color:var(--mu);margin-top:4px">🤖 AI action → <b>Care Task:</b> ${x.task} · <b>Education:</b> ${x.edu}</div></div>`;}).join(''):'<div class="note">No barriers logged yet. Open any patient → <b>“Log a barrier”</b> to capture why someone didn’t proceed (e.g. flu-like symptoms after Dose 1). The AI engine collects it here, creates a Care Task, and queues tailored education for that patient — closing the dose-2 drop-off loop.</div>';}
+  el.innerHTML=barrierLog.length?barrierLog.slice(0,12).map((x,i)=>{const p=patients[x.pid];return `<div onclick="openBarrier(${i})" style="border:1px solid var(--bdr);border-radius:9px;padding:10px 12px;margin-bottom:8px;cursor:pointer" onmouseover="this.style.borderColor='var(--bl)'" onmouseout="this.style.borderColor='var(--bdr)'"><div style="display:flex;justify-content:space-between"><b style="font-size:12px">${p?p.en:'—'} ${p?'<span class="tag '+p.rk+'" style="font-weight:600">'+p.risk+'</span>':''}</b><span style="font-size:10px;color:var(--mu)">${x.date} · click for details</span></div><div style="font-size:12px;color:var(--rd);margin-top:3px">🚧 ${x.label}</div><div style="font-size:11px;color:var(--mu);margin-top:4px">🤖 AI action → <b>Care Task:</b> ${x.task} · <b>Education:</b> ${x.edu}</div></div>`;}).join(''):'<div class="note">No barriers logged yet. Open any patient → <b>“Log a barrier”</b> to capture why someone didn’t proceed (e.g. flu-like symptoms after Dose 1). The AI engine collects it here, creates a Care Task, and queues tailored education for that patient — closing the dose-2 drop-off loop.</div>';}
+function openBarrier(i){const x=barrierLog[i],p=patients[x.pid],b=BARRIERS[x.key];
+  const why={flu:'Patients who feel unwell after Dose 1 often skip Dose 2 — reassurance + rebooking recovers them.',fear:'Fear of side effects is a top driver of decline (Confidence). Counselling + a doctor-endorsed message helps.',busy:'Forgetting / busyness causes silent drop-off — timely reminders recover most.',cost:'Uncertainty about cost deters patients even when the vaccine is free.',travel:'Distance / time is a real access barrier — nearer or pharmacy slots help.',doubt:'Doubt that the vaccine works (Calculation) — efficacy facts + endorsement help.',access:'Could not get an appointment — direct booking removes the friction.'}[x.key]||'';
+  document.getElementById('pmT').textContent='Barrier detail · '+(p?p.en:'—');
+  document.getElementById('pmB').innerHTML=`<div class="card cp"><div style="font-size:15px;font-weight:800">${p?p.en:'—'} ${p?'<span class="tag '+p.rk+'">'+p.risk+'</span>':''}</div><div style="font-size:11px;color:var(--mu);margin-top:3px">${p?p.age+'y · '+p.file+' · '+p.phc:''} · logged ${x.date}</div></div>
+   <div class="card cp" style="margin-top:12px;border-left:3px solid var(--rd)"><div style="font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase">What</div><div style="font-size:14px;font-weight:700;color:var(--rd);margin:4px 0 12px">🚧 ${x.label}</div><div style="font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase">Why it matters</div><div style="font-size:12px;margin-top:4px;line-height:1.6">${why}</div></div>
+   <div class="ai" style="margin-top:12px"><div class="ai-h"><div class="ai-ic">🤖</div><div><div class="ai-t">AI response (rule engine)</div><div class="ai-s">Auto-routed</div></div></div><div class="ai-b"><div class="ai-bt">Care Task created · ${b?b.role:''}</div><div style="font-size:12px;color:rgba(255,255,255,.85)">${x.task}</div></div><div class="ai-b"><div class="ai-bt">Education queued</div><div style="font-size:12px;color:rgba(255,255,255,.85)">${x.edu}</div></div></div>
+   ${p?`<button class="btn btn-p btn-sm" style="margin-top:12px" onclick="openPat(${x.pid})">Open full patient record →</button>`:''}`;
+  document.getElementById('patModal').classList.add('open');}
 document.getElementById('patModal').onclick=e=>{if(e.target.id==='patModal')closePat();};
 
 /* ===== Settings ===== */
@@ -1030,19 +1066,22 @@ const B={start(){chat.innerHTML='';typing(()=>{add('أهلاً بك 👋 أنا 
  under(){typing(()=>{add('هل لديك نقص مناعة أو تتناول أدوية مثبطة؟','bot');setOpts([{t:'نعم',go:()=>B.elig(true)},{t:'لا',go:B.no}]);});},
  young(){typing(()=>{add('اللقاح لمن هم 18+ (نقص مناعة) أو 50+. هل ترعى شخصاً مؤهلاً؟','bot');setOpts([{t:'نعم',go:B.care},{t:'لا',go:B.end}]);});},
  no(){typing(()=>{add('غير موصى به حالياً 🙏 هل ترعى شخصاً 50+ أو لديه نقص مناعة؟','bot');setOpts([{t:'نعم',go:B.care},{t:'لا',go:B.end}]);});},
- care(){typing(()=>{add('جزاك الله خيراً 🤍 شارك رقمه وسيتصل به المنسق خلال 48 ساعة.','bot');setOpts([{t:'سأشارك الرقم',go:B.thx},{t:'اتصلوا بي',go:B.thx}]);});},
+ care(){typing(()=>{add('جزاك الله خيراً على رعايتك 🤍 كيف تحب أن نساعد؟','bot');setOpts([{t:'تواصلوا معه (سأعطيكم رقمه)',go:B.careContact},{t:'سأكمل التسجيل نيابةً عنه',go:B.careSelf}]);});},
+ careContact(){typing(()=>{add('ممتاز، شارك رقم جواله وسيتصل به منسق المركز خلال 48 ساعة لترتيب الموعد. 🤍','bot');botTask('Contact relative (caregiver lead) — number shared, book Dose 1');setOpts([{t:'تم، شكراً',go:B.end}]);});},
+ careSelf(){typing(()=>{add('بالنيابة عمّن ترعاه — كم عمره؟','bot');setOpts([{t:'50 أو أكثر',go:()=>B.elig(false)},{t:'18–49',go:B.under},{t:'أقل من 18',go:B.young}]);});},
  elig(im){typing(()=>{add(im?'أنت مؤهل ✅ وسنوفر جدولاً أسرع.':'ممتاز ✅ أنت مؤهل.','bot');B._im=im;typing(()=>{add('هل أخذت الجرعة الأولى؟','bot');setOpts([{t:'نعم',go:B.when},{t:'لا',go:B.reg}]);});});},
  when(){typing(()=>{add('متى تقريباً؟','bot');setOpts([{t:'منذ أكثر من شهرين',go:B.due},{t:'منذ أقل',go:B.wait}]);});},
- due(){typing(()=>{add('حان وقت الجرعة الثانية ✅ احجز: 🔗 jusoor.health/shingrix-d2','bot');B.sym();});},
+ due(){typing(()=>{add('حان وقت الجرعة الثانية ✅ احجز: 🔗 jusoor.health/shingrix-d2','bot');botTask('WhatsApp lead — overdue Dose 2, confirm booking');B.sym();});},
  wait(){typing(()=>{add('ممتاز 👏 سنذكّرك عند موعد الجرعة الثانية ('+(B._im?'شهر–شهرين':'شهرين–٦ أشهر')+').','bot');B.sym();});},
- reg(){typing(()=>{add('لنبدأ بحجز جرعتك الأولى 💉 احجز: 🔗 jusoor.health/shingrix','bot');B.thx();});},
+ reg(){typing(()=>{add('لنبدأ بحجز جرعتك الأولى 💉 احجز: 🔗 jusoor.health/shingrix','bot');botTask('New WhatsApp lead — book Dose 1');B.thx();});},
  sym(){typing(()=>{add('بعد التطعيم، إذا شعرت بألم بالذراع أو تعب فهذا طبيعي. هل تريد متابعة الأعراض؟','bot');setOpts([{t:'نعم',go:B.symY},{t:'لا، شكراً',go:B.end}]);});},
- symY(){typing(()=>{add('سنرسل لك رسالة بعد ٣ أيام للاطمئنان 🤍 وإذا ظهرت حمى عالية أو طفح تواصل معنا فوراً.','bot');B.end();});},
+ symY(){typing(()=>{add('سنرسل لك رسالة بعد ٣ أيام للاطمئنان 🤍 وإذا ظهرت حمى عالية أو طفح تواصل معنا فوراً.','bot');botTask('WhatsApp symptom follow-up in 3 days');B.end();});},
  thx(){typing(()=>{add('هل لديك سؤال آخر؟ 😊','bot');setOpts([{t:'أسئلة شائعة',go:B.faqMenu},{t:'هل اللقاح آمن؟',go:B.safe},{t:'لا، شكراً',go:B.end}]);});},
  faqMenu(){typing(()=>{add('اختر سؤالك 👇 (قاعدة معرفة محلية)','bot');setOpts([{t:KB[2].q,go:()=>B.ans(2)},{t:KB[1].q,go:()=>B.ans(1)},{t:KB[6].q,go:()=>B.ans(6)},{t:KB[9].q,go:()=>B.ans(9)},{t:KB[10].q,go:()=>B.ans(10)},{t:'لا، شكراً',go:B.end}]);});},
  ans(i){typing(()=>{add(KB[i].a,'bot');setOpts([{t:'سؤال آخر',go:B.faqMenu},{t:'شكراً',go:B.end}]);});},
  safe(){typing(()=>{add('آمن ومعتمد ✅ أعراض بسيطة ليوم أو يومين فقط، واللقاح غير حي لذا لا يسبب المرض.','bot');setOpts([{t:'أسئلة شائعة',go:B.faqMenu},{t:'شكراً',go:B.end}]);});},
  end(){typing(()=>{add('شكراً لتواصلك مع مساعد جسور 🤍','bot');opts.innerHTML='<button onclick="botRestart()">↻ ابدأ من جديد</button>';});}};
+function botTask(t){addTodo(t,'call','Coordinator','bot');}
 function botRestart(){B._im=false;B.start();}
 
 /* ===== init ===== */

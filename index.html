@@ -1087,10 +1087,17 @@ const B={start(){chat.innerHTML='';typing(()=>{add('أهلاً وسهلاً 👋
  care(){typing(()=>{add('جزاك الله خيراً على رعايتك 🤍 كيف تحب أن نساعد؟','bot');setOpts([{t:'تواصلوا معه (سأعطيكم رقمه)',go:B.careContact},{t:'سأكمل التسجيل نيابةً عنه',go:B.careSelf}]);});},
  careContact(){typing(()=>{add('ممتاز، شارك رقم جواله وسيتصل به منسق المركز خلال 48 ساعة لترتيب الموعد. 🤍','bot');botTask('Contact relative (caregiver lead) — number shared, book Dose 1');setOpts([{t:'تم، شكراً',go:B.end}]);});},
  careSelf(){typing(()=>{add('بالنيابة عمّن ترعاه — كم عمره؟','bot');setOpts([{t:'50 أو أكثر',go:()=>B.elig(false)},{t:'18–49',go:B.under},{t:'أقل من 18',go:B.young}]);});},
- elig(im){typing(()=>{add(im?'أنت مؤهل ✅ وسنوفر جدولاً أسرع.':'ممتاز ✅ أنت مؤهل.','bot');B._im=im;typing(()=>{add('هل أخذت الجرعة الأولى؟','bot');setOpts([{t:'نعم',go:B.when},{t:'لا',go:B.reg}]);});});},
- when(){typing(()=>{add('متى تقريباً؟','bot');setOpts([{t:'منذ أكثر من شهرين',go:B.due},{t:'منذ أقل',go:B.wait}]);});},
- due(){typing(()=>{add('حان وقت الجرعة الثانية ✅ جرعة واحدة تكمل حمايتك بإذن الله. احجز: 🔗 jusoor.health/shingrix-d2 — وسنذكّرك قبل الموعد بـ٣ أيام ثم بيومين.','bot');botTask('WhatsApp lead — overdue Dose 2, confirm booking');B.sym();});},
+ elig(im){typing(()=>{add(im?'أنت مؤهل ✅ ولديك جدول أسرع للجرعة الثانية.':'ممتاز ✅ أنت مؤهل للقاح الحزام الناري.','bot');B._im=im;typing(()=>{add('هل أخذت الجرعة الأولى من شينجريكس؟','bot');setOpts([{t:'نعم',go:B.when},{t:'لا، لم آخذها',go:B.bookAsk},{t:'لست متأكداً',go:B.bookAsk}]);});});},
+ when(){typing(()=>{add('متى تقريباً أخذت الجرعة الأولى؟','bot');setOpts([{t:'منذ أكثر من شهرين',go:B.due},{t:'منذ أقل',go:B.wait}]);});},
+ due(){B._d2=true;typing(()=>{add('حان وقت جرعتك الثانية ✅ جرعة واحدة تكمل حمايتك بإذن الله — ولا داعي للبدء من جديد.','bot');B.bookAsk();});},
  wait(){typing(()=>{add('ممتاز 👏 سنذكّرك عند فتح موعد الجرعة الثانية ('+(B._im?'شهر–شهرين':'شهرين–٦ أشهر')+')، ونرسل تذكيراً قبل الموعد بـ٣ أيام ثم بيومين.','bot');B.sym();});},
+ bookAsk(){typing(()=>{add('هل ترغب أن نحجز لك موعداً'+(B._d2?' للجرعة الثانية':'')+'؟','bot');setOpts([{t:'نعم، احجزوا لي 👍',go:B.bookYes},{t:'لدي أسئلة أولاً',go:B.qMenu},{t:'لست متأكداً بعد',go:B.bookLater}]);});},
+ bookYes(){typing(()=>{add('ممتاز ✅ سيتواصل معك منسق المركز لتأكيد وقت الموعد الأنسب لك'+(B._d2?'':'، ويمكن أخذ اللقاح مع لقاح الإنفلونزا في نفس الزيارة')+'. وسنرسل تذكيراً قبل الموعد بـ٣ أيام ثم بيومين 🤍','bot');botTask(B._d2?'WhatsApp — patient wants Dose 2 appointment, contact to book':'WhatsApp — patient wants appointment, contact to book Dose 1');B.sym();});},
+ bookLater(){typing(()=>{add('لا مشكلة إطلاقاً 🤍 سيتواصل معك منسق المركز لمناقشة أي استفسار ومساعدتك على القرار، دون أي إلزام.','bot');botTask('WhatsApp — patient undecided, contact for counselling discussion');typing(()=>{add('وإن أحببت، أجيبك الآن على أكثر الأسئلة شيوعاً 👇','bot');B.qOpts();});});},
+ qMenu(){typing(()=>{add('بكل سرور 🤍 ما الذي تحب معرفته؟','bot');B.qOpts();});},
+ qOpts(){setOpts([{t:'هل أحتاجه فعلاً؟',go:()=>B.q('need')},{t:'هل اللقاح آمن؟',go:()=>B.q('safe')},{t:'الأعراض ومدتها؟',go:()=>B.q('side')},{t:'التكلفة / التغطية؟',go:()=>B.q('cost')},{t:'كم جرعة والمدة؟',go:()=>B.q('doses')},{t:'أصبت/طعّمت سابقاً؟',go:()=>B.q('prev')},{t:'احجزوا لي الآن 👍',go:B.bookYes}]);},
+ q(k){const QA={need:'الحزام الناري مؤلم جداً وقد يترك ألماً عصبياً يستمر شهوراً أو سنوات. الخطر يزداد بعد الخمسين ومع ضعف المناعة، واللقاح فعّال أكثر من ٩٠٪ — الوقاية أسهل بكثير من العلاج 🤍',safe:'اللقاح آمن ومعتمد، وهو غير حي (بروتيني) لذلك لا يسبب المرض. أغلب الأعراض بسيطة وتزول خلال يومين.',side:'الأكثر شيوعاً: ألم واحمرار مكان الحقن، تعب، صداع، آلام عضلية، وأحياناً حمى خفيفة — تستمر يومين إلى ثلاثة وتزول وحدها، وهي علامة أن جسمك يبني المناعة.',cost:'التطعيم متاح للمؤهلين ضمن البرنامج، وسيوضح لك المنسق التغطية والتفاصيل. لا تدع التكلفة تمنعك عن حماية نفسك 🤍',doses:'جرعتان: الثانية بعد شهرين إلى ٦ أشهر من الأولى (شهر إلى شهرين لبعض ضعيفي المناعة). الجرعتان مهمتان للحماية الكاملة.',prev:'حتى لو أصبت بالحزام الناري سابقاً أو أخذت اللقاح القديم (زوستافاكس)، يُنصح بأخذ شينجريكس لأن حمايته أقوى وأطول.'};
+   typing(()=>{add(QA[k],'bot');botTask('WhatsApp concern ('+k+') — answered, offered booking');setOpts([{t:'احجزوا لي الآن 👍',go:B.bookYes},{t:'سؤال آخر',go:B.qMenu},{t:'لا، شكراً',go:B.end}]);});},
  reg(){typing(()=>{add('لنبدأ بحجز جرعتك الأولى 💉 احجز: 🔗 jusoor.health/shingrix — وسنرسل لك تذكيراً قبل الموعد بـ٣ أيام ثم بيومين. ويمكن أخذه مع لقاح الإنفلونزا في نفس الزيارة.','bot');botTask('New WhatsApp lead — book Dose 1');B.thx();});},
  sym(){typing(()=>{add('بعد التطعيم، إذا شعرت بألم بالذراع أو تعب فهذا طبيعي. هل تريد متابعة الأعراض؟','bot');setOpts([{t:'نعم',go:B.symY},{t:'لا، شكراً',go:B.end}]);});},
  symY(){typing(()=>{add('سنرسل لك رسالة بعد ٣ أيام للاطمئنان 🤍 وإذا ظهرت حمى عالية أو طفح تواصل معنا فوراً.','bot');botTask('WhatsApp symptom follow-up in 3 days');B.end();});},
@@ -1102,7 +1109,7 @@ const B={start(){chat.innerHTML='';typing(()=>{add('أهلاً وسهلاً 👋
  safe(){typing(()=>{add('آمن ومعتمد ✅ أعراض بسيطة ليوم أو يومين فقط، واللقاح غير حي لذا لا يسبب المرض.','bot');setOpts([{t:'أسئلة شائعة',go:B.faqMenu},{t:'شكراً',go:B.end}]);});},
  end(){typing(()=>{add('شكراً لتواصلك مع مساعد جسور 🤍','bot');opts.innerHTML='<button onclick="botRestart()">↻ ابدأ من جديد</button>';});}};
 function botTask(t){addTodo(t,'call','Coordinator','bot');}
-function botRestart(){B._im=false;B.start();}
+function botRestart(){B._im=false;B._d2=false;B.start();}
 
 /* ===== init ===== */
 renderReg();refreshMetrics();renderHuddle();renderTasks('all');renderVC();renderMessages();renderEdu();pickSeg(0);botRestart();renderWiz();restoreSession();renderBarriers();renderKB();

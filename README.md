@@ -1,6 +1,6 @@
-# Jusoor × GSK — Shingrix AI Engagement Engine
+# Jusoor — Shingrix AI Engagement Engine
 
-An AI-powered patient engagement system for the GSK Shingrix (recombinant zoster vaccine) adult immunisation campaign in the Kingdom of Saudi Arabia, built by Jusoor.
+An AI-powered patient engagement system for the Shingrix (recombinant zoster vaccine) adult immunisation campaign in the Kingdom of Saudi Arabia, built by Jusoor.
 
 ## What it does
 A conversational Arabic WhatsApp assistant that identifies eligible adults, educates them by risk profile, and follows them through the full two-dose course — lifting series completion without requiring access to MOH records (Phase 1 runs entirely on opt-in, self-reported data).
@@ -16,4 +16,4 @@ A single self-contained file with 8 sections: Overview dashboard, Vaccination Re
 
 Open `index.html` in any browser, or enable GitHub Pages to get a live demo link.
 
-> Demo data is illustrative. Clinical copy should be reviewed by GSK medical/regulatory before patient use.
+> Demo data is illustrative. Clinical copy should be reviewed by medical/regulatory before patient use.
